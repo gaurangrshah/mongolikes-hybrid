@@ -20,9 +20,6 @@ export const UserSchema = new mongoose.Schema(
       trim: true,
       lowercase: true,
       minLength: [6, "Sorry must be longer than 6 chars"],
-      validate(value) {
-        if (!validator.isEmail(value)) throw new Error("Email is invalid");
-      },
     },
     emailVerified: {
       type: Date,
@@ -35,10 +32,6 @@ export const UserSchema = new mongoose.Schema(
       type: String,
       required: true,
       minLength: [6, "Sorry password must be longer than 6 chars"],
-      validate(value) {
-        if (value && value.toLowerCase().includes("password"))
-          throw new Error("password cannot be 'password'");
-      },
     },
     posts: [{ type: mongoose.Schema.Types.ObjectId, ref: "Post" }],
     likes: [{ type: mongoose.Schema.Types.ObjectId, ref: "Like" }],
