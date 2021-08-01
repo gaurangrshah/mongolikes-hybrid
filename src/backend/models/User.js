@@ -9,7 +9,7 @@ export const UserSchema = new mongoose.Schema(
     },
     username: {
       type: String,
-      required: true,
+      // required: true,
       trim: true,
       lowercase: true,
     },
@@ -30,7 +30,6 @@ export const UserSchema = new mongoose.Schema(
     },
     password: {
       type: String,
-      required: true,
       minLength: [6, "Sorry password must be longer than 6 chars"],
     },
     posts: [{ type: mongoose.Schema.Types.ObjectId, ref: "Post" }],
