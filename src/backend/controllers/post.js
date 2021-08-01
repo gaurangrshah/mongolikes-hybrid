@@ -47,3 +47,18 @@ export async function getFeed() {
     return { ...errors.server, err };
   }
 }
+
+export async function getPostsByAuthor(authorId) {
+  try {
+    const author = await User.findOne({ _id: authorId })
+      .populate("posts")
+      .sort({ published: "desc" })
+      .exec();
+
+    const publicPosts = author?.posts?.filter((post) => post.published);
+    author.posts = publicPosts;
+    return { author };
+  } catch (err) {
+    return { ...errors.server, err };
+  }
+}
