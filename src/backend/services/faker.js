@@ -13,12 +13,14 @@ const users = [];
 // generate random users using faker
 function generateUsers() {
   for (var i = 0; i < 10; i++) {
+    const name = faker.name.firstName();
+    const username = `${name}-${randomString()}`;
     const user = new User({
-      username: `${faker.name.firstName()}-${randomString()}`,
-      email: faker.internet.email(),
+      name,
+      username: `${name}-${randomString()}`,
+      email: `${username}@example.com`,
       password: faker.internet.password(),
-      role: "user",
-      avatar: faker.image.avatar(),
+      image: faker.image.avatar(),
       posts: [],
       likes: [],
     });
