@@ -1,29 +1,27 @@
 {
-  "name": "next-auth-example",
+  "name": "mongolikes",
   "version": "0.0.0",
   "private": true,
-  "description": "An example project for NextAuth.js",
-  "repository": "https://github.com/nextauthjs/next-auth-example.git",
-  "bugs": {
-    "url": "https://github.com/nextauthjs/next-auth/issues"
-  },
-  "homepage": "http://next-auth-example.now.sh",
+  "description": "",
+  "repository": "",
   "main": "",
   "scripts": {
     "dev": "next",
     "build": "next build",
     "start": "next start"
   },
-  "author": "Iain Collins <me@iaincollins.com>",
-  "contributors": [
-    "Balázs Orbán <info@balazsorban.com>"
-  ],
   "license": "ISC",
   "dependencies": {
+    "mongoose": "^5.13.5",
+    "morgan": "^1.10.0",
     "next": "^11.0.0",
     "next-auth": "latest",
+    "next-connect": "^0.10.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "sqlite3": "^5.0.2"
+  },
+  "optionalPeerDependencies": {
+    "mongodb": "^4.0.1"
   }
 }
