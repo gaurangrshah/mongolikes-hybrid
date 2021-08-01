@@ -1,4 +1,5 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
+import { createModels } from "../utils";
 
 const connection = {}; /* creating connection object*/
 
@@ -9,16 +10,17 @@ export const options = {
   useFindAndModify: false, // uses findOneAndUpdate instead
 };
 
-async function db() {
-  /* check if we have connection to our databse*/
+async function dbConnect() {
+  /* is connection already established? */
   if (connection.isConnected) {
     return;
   }
-  /* connecting to our database */
+  /* connecting to db */
   const db = await mongoose.connect(process.env.MONGO_DB_URI, options);
+
   connection.isConnected = db.connections[0].readyState;
-  // console.log(db)
+  createModels();
   return connection;
 }
 
-module.exports = db;
+export default dbConnect;

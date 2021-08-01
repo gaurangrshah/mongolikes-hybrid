@@ -1,7 +1,7 @@
 import nextConnect from "next-connect";
 import morgan from "morgan";
 
-import db from "@/services/mongoose";
+import db from "./db";
 
 const middleware = nextConnect();
 

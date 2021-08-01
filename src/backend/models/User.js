@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const UserSchema = new mongoose.Schema(
+export const UserSchema = new mongoose.Schema(
   {
     name: {
       type: String,
@@ -64,6 +64,7 @@ UserSchema.methods.toJSON = function () {
   delete obj.role;
   delete obj.createdAt;
   delete obj.updatedAt;
+  obj._id = obj._id.toString();
   return obj;
 };
 

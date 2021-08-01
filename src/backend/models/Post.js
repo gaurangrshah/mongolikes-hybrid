@@ -32,6 +32,9 @@ const PostSchema = new mongoose.Schema(
 PostSchema.methods.toJSON = function () {
   var obj = this.toObject();
   delete obj.__v;
+  obj._id = obj._id.toString();
+  obj.createdAt = obj.createdAt.toString();
+  obj.updatedAt = obj.updatedAt.toString();
   return obj;
 };
 
