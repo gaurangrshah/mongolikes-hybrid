@@ -1,5 +1,3 @@
-// import db from "@/backend/services/mongoose";
-
 const getError = (err) =>
   err?.response?.data?.message
     ? err.response.data.message.toString()
