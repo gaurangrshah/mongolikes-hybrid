@@ -62,3 +62,16 @@ export async function getPostsByAuthor(authorId) {
     return { ...errors.server, err };
   }
 }
+
+
+export async function getPostBySlug(slug) {
+  try {
+    const post = await Post.findOne({ slug })
+      .populate("author")
+      .exec();
+    return { post };
+  } catch (err) {
+    return { ...errors.server, err };
+  }
+}
+
