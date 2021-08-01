@@ -63,15 +63,20 @@ export async function getPostsByAuthor(authorId) {
   }
 }
 
-
 export async function getPostBySlug(slug) {
   try {
-    const post = await Post.findOne({ slug })
-      .populate("author")
-      .exec();
+    const post = await Post.findOne({ slug }).populate("author").exec();
     return { post };
   } catch (err) {
     return { ...errors.server, err };
   }
 }
 
+export async function getPostById(postId) {
+  try {
+    const post = await Post.findOne({ _id: postId }).populate("author").exec();
+    return { post };
+  } catch (err) {
+    return { ...errors.server, err };
+  }
+}
