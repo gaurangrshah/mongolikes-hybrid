@@ -1,5 +1,7 @@
 import NextAuth from "next-auth";
 import Providers from "next-auth/providers";
+import Models from "@/backend/models";
+import { options } from "@/backend/services/mongoose";
 
 // For more information on each option (and a full list of options) go to
 // https://next-auth.js.org/configuration/options
@@ -24,7 +26,20 @@ export default NextAuth({
   // Notes:
   // * You must install an appropriate node_module for your database
   // * The Email provider requires a database (OAuth providers do not)
-  database: process.env.MONGO_DB_URI,
+  // database: process.env.MONGO_DB_URI,
+  database: {
+    type: "mongodb",
+    // useNewUrlParser: true,
+    // useCreateIndex: true,
+    // useUnifiedTopology: true,
+    // useFindAndModify: false,
+    ...options,
+    url: process.env.MONGO_DB_URI,
+    customModels: {
+      User: Models.User,
+      Post: Models.Task,
+    },
+  },
 
   // The secret should be set to a reasonably long random string.
   // It is used to sign cookies and to sign and encrypt JSON Web Tokens, unless

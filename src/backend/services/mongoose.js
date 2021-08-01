@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const connection = {}; /* creating connection object*/
 
-const options = {
+export const options = {
   useNewUrlParser: true,
   useCreateIndex: true,
   useUnifiedTopology: true,
@@ -21,4 +21,4 @@ async function db() {
   return connection;
 }
 
-export default db;
+module.exports = db;
