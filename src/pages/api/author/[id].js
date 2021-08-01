@@ -7,8 +7,7 @@ import { getPostsByAuthor } from "@/backend/controllers";
 
 const handler = nc({ onError })
   .use(middleware)
-  .get(async (req, res, user) => {
-    console.log(req.db);
+  .get(async (req, res) => {
     if (!req?.query?.id) {
       return res.status(400).json({ error: "No id provided" });
     }

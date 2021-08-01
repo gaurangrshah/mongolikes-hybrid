@@ -7,7 +7,7 @@ import { createPost, getFeed } from "@/backend/controllers";
 
 const handler = nc({ onError })
   .use(middleware)
-  .get(async (req, res, user) => {
+  .get(async (req, res) => {
     const posts = await getFeed();
     if (posts) return res.json(posts);
     res.status(500).json({ message: "Error creating post" });

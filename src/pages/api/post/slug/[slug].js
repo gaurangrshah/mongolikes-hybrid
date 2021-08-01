@@ -6,8 +6,7 @@ import { getPostBySlug } from "@/backend/controllers";
 
 const handler = nc({ onError })
   .use(middleware)
-  .get(async (req, res, user) => {
-    console.log("🚀 | file: index.js | line 1 | req.body", req.query.slug);
+  .get(async (req, res) => {
     const post = await getPostBySlug(req.query.slug);
     if (post) return res.json(post);
     res.status(500).json({ message: "Error creating post" });
