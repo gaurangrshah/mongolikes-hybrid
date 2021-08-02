@@ -18,7 +18,7 @@ export function UserMenu() {
     { label: "client", href: "/clent" },
     { label: "server", href: "/server" },
     { label: "protected", href: "/protected" },
-    { label: "api", href: "/api" },
+    { label: "api", href: "/api-status" },
   ];
 
   return (
@@ -76,8 +76,10 @@ export function UserMenu() {
         <hr />
         <>
           {defaultLinks.map((link) => (
-            <MenuItem key={link.href} href={link.href}>
-              {link.label}
+            <MenuItem key={link.href}>
+              <ChNextLink href={link.href} chProps={{ w: "full" }}>
+                {link.label}
+              </ChNextLink>
             </MenuItem>
           ))}
         </>
