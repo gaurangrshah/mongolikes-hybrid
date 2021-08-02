@@ -2,16 +2,12 @@ import Post from "../models/Post";
 import User from "../models/User";
 import { errors } from "../utils";
 
-export async function getFeed() {
+export async function getPublicFeed() {
   try {
-    const posts = await Post.find()
-      .sort({ published: "desc" })
-      .populate("author")
-      .exec();
-    return {
-      // only return published posts
-      posts: posts?.length && posts.filter((post) => post.published),
-    };
+    const posts = await Post.where("published")
+      .ne(null)
+      .sort({ published: "desc" });
+    return posts;
   } catch (err) {
     return { ...errors.server, err };
   }
