@@ -1,11 +1,14 @@
+import { useEffect } from "react";
 import useSWR from "swr";
 import { Spinner } from "@chakra-ui/react";
 
 import Page from "@/components/next/Page";
+
+import { useToastDispatch } from "@/chakra/contexts/toast-context";
 import { jsonFetcher } from "@/utils";
 
 export default function LandingPage({ initialData }) {
-  const { data, loading } = useSWR(
+  const { data, error } = useSWR(
     `${process.env.NEXT_PUBLI_SITE_URL}/api/data`,
     jsonFetcher,
     {
@@ -13,7 +16,20 @@ export default function LandingPage({ initialData }) {
     }
   );
 
-  if (loading) return <Spinner />;
+  const { setMsg } = useToastDispatch();
+
+  if (!data) return <Spinner />;
+
+  useEffect(
+    () =>
+      error &&
+      setMsg(
+        { description: error?.message || "Sorry there seems to be an error" },
+        "error"
+      ),
+    [error]
+  );
+
   return (
     <>
       <Page title='Test Render' />
@@ -23,7 +39,10 @@ export default function LandingPage({ initialData }) {
 }
 
 export async function getStaticProps(ctx) {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/posts`);
-  const data = await response.json();
-  if (data) return { props: { initialData: data || "What is this" } };
+  const { jsonFetcher } = await import("../utils/swr/json-fetcher");
+
+  const response = await jsonFetcher(
+    `${process.env.NEXT_PUBLIC_SITE_URL}/api/posts`
+  );
+  if (response) return { props: { initialData: response || "What is this" } };
 }
