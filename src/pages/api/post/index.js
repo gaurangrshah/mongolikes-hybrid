@@ -6,7 +6,7 @@ import { onError } from "@/backend/utils";
 import { createPost } from "@/backend/controllers";
 
 const handler = nc({ onError })
-  .use(verify) // 🔒
+  // .use(verify) // 🔒
   .use(middleware)
   .post(async (req, res, user) => {
     const post = await createPost(req.body, user);
