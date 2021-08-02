@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
-import { UserSchema, PostSchema } from "../models/User";
+import { UserSchema } from "../models/User";
+import { PostSchema } from "../models/Post";
 
 const schemas = {
   User: UserSchema,
