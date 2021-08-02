@@ -40,7 +40,7 @@ export const UserSchema = new mongoose.Schema(
 
 UserSchema.statics.findByEmail = async function (email) {
   const currentUser = this;
-  const user = await currentUser.findOne({ email }).exec();
+  const user = await currentUser.findOne({ email }).populate("posts").exec();
 
   if (!user) {
     console.log("findbycredentials: user does not exist");
