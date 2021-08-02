@@ -6,13 +6,15 @@ import Page from "@/components/next/Page";
 
 import { useToastDispatch } from "@/chakra/contexts/toast-context";
 import { jsonFetcher } from "@/utils";
+import { options } from "@/app-config";
 
 export default function LandingPage({ initialData }) {
   const { data, error } = useSWR(
-    `${process.env.NEXT_PUBLI_SITE_URL}/api/data`,
+    `${process.env.NEXT_PUBLIC_SITE_URL}/api/posts`,
     jsonFetcher,
     {
       initialData,
+      refreshInterval: options?.swr?.refreshInterval,
     }
   );
 
@@ -34,6 +36,11 @@ export default function LandingPage({ initialData }) {
     <>
       <Page title='Test Render' />
       {data && <div>{JSON.stringify(data, null, 2)}</div>}
+      {error && (
+        <div>
+          If there is an error please try refreshing the page. Thank you.
+        </div>
+      )}
     </>
   );
 }

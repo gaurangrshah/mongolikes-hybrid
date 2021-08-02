@@ -42,7 +42,6 @@ export function ToastProvider({ config, children }) {
     setTimeout(() => {
       msg && setMsg(null);
     }, 9000);
-    return () => setMsg(null);
   }, [msg]);
 
   useEffect(() => {
@@ -51,7 +50,6 @@ export function ToastProvider({ config, children }) {
     setTimeout(() => {
       status && setStatus("info");
     }, 9000);
-    return () => setStatus("info");
   }, [status]);
 
   const setMessage = useCallback(

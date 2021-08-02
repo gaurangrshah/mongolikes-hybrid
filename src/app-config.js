@@ -13,7 +13,12 @@ const appConfig = {
       feed: "/posts",
     },
   },
-  options: { toasts: { show: true } },
+  options: {
+    toasts: { show: true },
+    swr: {
+      refreshInterval: process.env.NODE_ENV === "development" ? 20000 : 1000,
+    },
+  },
   providers: [ModalProvider, ToastProvider],
   envs: {
     isSSR: typeof window === "undefined",
