@@ -7,7 +7,8 @@ export async function getPublicFeed() {
     const posts = await Post.where("published")
       .ne(null)
       .sort({ published: "desc" });
-    return posts;
+    // return each post as JSON, so nextjs getSSP can serialize
+    return posts.map((post) => post.toJSON());
   } catch (err) {
     return { ...errors.server, err };
   }

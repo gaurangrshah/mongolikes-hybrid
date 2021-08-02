@@ -10,9 +10,7 @@ const appConfig = {
   routes: {
     feed: "/",
     api: {
-      endpoints: {
-        // include endpoints exposed via client side api routes
-      },
+      feed: "/posts",
     },
   },
   options: { toasts: { show: true } },
