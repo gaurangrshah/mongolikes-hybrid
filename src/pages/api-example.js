@@ -1,17 +1,20 @@
-import Layout from '../components/layout'
+import { Code } from "@chakra-ui/react";
 
-export default function Page () {
+export default function Page() {
   return (
-    <Layout>
+    <>
       <h1>API Example</h1>
       <p>The examples below show responses from the example API endpoints.</p>
-      <p><em>You must be signed in to see responses.</em></p>
+      <p>
+        <em>You must be signed in to see responses.</em>
+      </p>
       <h2>Session</h2>
       <p>/api/examples/session</p>
-      <iframe src="/api/examples/session"/>
+      <Code as='iframe' src='/api/z_examples/session' />
+      <Code as='iframe' src='/api/posts' />
       <h2>JSON Web Token</h2>
       <p>/api/examples/jwt</p>
-      <iframe src="/api/examples/jwt"/>
-    </Layout>
-  )
+      <Code as='iframe' src='/api/z_examples/jwt' />
+    </>
+  );
 }

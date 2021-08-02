@@ -1,3 +1,6 @@
+import { ToastProvider } from "./chakra/contexts/toast-context";
+import { ModalProvider } from "./chakra/contexts/modal-context";
+
 const appConfig = {
   details: {
     title: "MongoLikes",
@@ -13,7 +16,7 @@ const appConfig = {
     },
   },
   options: { toasts: { show: true } },
-  // providers: [ModalProvider, ToastProvider],
+  providers: [ModalProvider, ToastProvider],
   envs: {
     isSSR: typeof window === "undefined",
     isDev: process.env.NODE_ENV === "development",
