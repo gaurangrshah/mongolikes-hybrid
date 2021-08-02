@@ -7,7 +7,7 @@ export const errors = {
     message: "!ConflictError: this record already exists",
     error: true,
   },
-  unauthorized: {
+  forbidden: {
     status: 401,
     message: "!Insufficient Permissions: access restricted.",
     error: true,
