@@ -29,8 +29,6 @@ const PostSchema = new mongoose.Schema(
   { timestamps: { currentTime: () => Math.floor(Date.now() / 1000) } }
 );
 
-PostSchema.pre("remove", function (next) {});
-
 PostSchema.methods.publish = function (authorId) {
   if (this.published) throw new Error("This post is already published.");
   if (this.author.id.toString() === authorId.toString()) {

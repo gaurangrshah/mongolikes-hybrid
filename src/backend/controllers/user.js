@@ -70,7 +70,16 @@ export async function publishPost(postId, userId) {
   }
 }
 
-export function deletePost(postId, user) {}
+export async function deletePost(postId, userId) {
+  try {
+    return Post.deleteOne({
+      _id: postId,
+      author: userId,
+    }).exec();
+  } catch (err) {
+    console.error(err);
+  }
+}
 
 /*
 
