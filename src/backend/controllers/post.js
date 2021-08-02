@@ -1,7 +1,6 @@
 import Post from "../models/Post";
 import User from "../models/User";
-import { slugify, errors } from "../utils/slugify";
-
+import { errors } from "../utils";
 
 export async function getFeed() {
   try {
