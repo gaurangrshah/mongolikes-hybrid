@@ -43,7 +43,7 @@ function seeder(req, res) {
 
 const handler = nc({ onError })
   .use(middleware)
-  .get(async (req, res) => {
+  .post(async (req, res) => {
     await seeder(req, res);
   });
 
