@@ -1,6 +1,6 @@
 import User from "../models/User";
 import Post from "../models/Post";
-import { errors } from "../utils";
+import { errors, slugify } from "../utils";
 
 export async function getUserByEmail(email) {
   try {
@@ -17,6 +17,39 @@ export async function getUserById(_id) {
     return user.toJSON();
   } catch (err) {
     console.error(errors.notfound.message);
+  }
+}
+
+export async function createPost(
+  body,
+  user = { _id: "6106e125fda8ab8379b833d6" } // @FIXME: hardcoded user id as default param
+) {
+  const { title } = body;
+  const userId = user._id || "6106e125fda8ab8379b833d6";
+  try {
+    const newPost = new Post({
+      ...body,
+      slug: slugify(title),
+      author: userId,
+    });
+
+    const savedPost = await newPost.save();
+
+    if (savedPost) {
+      const author = await User.findOne({
+        _id: userId,
+      });
+      if (author) {
+        author.posts.push(savedPost._id);
+        await author.save();
+      }
+      return {
+        post: savedPost.toJSON(),
+        user: author.toJSON(),
+      };
+    } else throw new Error(errors.save.message);
+  } catch (err) {
+    console.error(err);
   }
 }
 
