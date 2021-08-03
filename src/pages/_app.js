@@ -5,12 +5,8 @@ import { DefaultLayout, ModalProvider, theme, ToastProvider } from "@/chakra";
 import { MessageRouter } from "@/components/next";
 
 import useSWR, { SWRConfig } from "swr";
-import appConfig from "@/app-config";
-// import { combineProviders } from "@/utils";
-// import "./styles.css";
 
 export default function App({ Component, pageProps, router }) {
-  // const Providers = combineProviders(appConfig?.providers);
   const { data: posts } = useSWR("/api/posts");
   return (
     <ChakraProvider theme={theme} resetCSS>

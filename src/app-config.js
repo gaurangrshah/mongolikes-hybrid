@@ -1,6 +1,3 @@
-import { ToastProvider } from "./chakra/contexts/toast-context";
-import { ModalProvider } from "./chakra/contexts/modal-context";
-
 const appConfig = {
   details: {
     title: "MongoLikes",
@@ -19,7 +16,6 @@ const appConfig = {
       refreshInterval: process.env.NODE_ENV === "development" ? 20000 : 1000,
     },
   },
-  providers: [ModalProvider, ToastProvider],
   envs: {
     isSSR: typeof window === "undefined",
     isDev: process.env.NODE_ENV === "development",
