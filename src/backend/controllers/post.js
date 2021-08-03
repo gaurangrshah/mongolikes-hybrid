@@ -5,10 +5,20 @@ import { errors } from "../utils";
 export async function getPublicFeed() {
   try {
     const posts = await Post.where("published")
+      .lean()
       .ne(null)
       .sort({ published: "desc" });
-    // return each post as JSON, so nextjs getSSP can serialize
-    return posts.map((post) => post.toJSON());
+    // // return each post as JSON, so nextjs getSSP can serialize
+
+    const postWithAuthor = await Promise.all(
+      posts.map(async (post) => {
+        const author = await User.findOne({ _id: post?.author?._id });
+        post.author = author;
+        return post;
+      })
+    );
+
+    return postWithAuthor;
   } catch (err) {
     return { ...errors.server, err };
   }

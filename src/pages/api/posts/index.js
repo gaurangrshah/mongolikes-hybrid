@@ -8,6 +8,7 @@ const handler = nc({ onError })
   .use(middleware)
   .get(async (req, res) => {
     const posts = await getPublicFeed();
+    console.log(`👏 Feed returned ${posts?.length} public posts`);
     if (posts) return res.json(posts);
     res.status(500).json({ message: "Error creating post" });
   });
