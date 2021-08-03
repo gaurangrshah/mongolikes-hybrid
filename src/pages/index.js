@@ -3,6 +3,7 @@ import useSWR from "swr";
 import { Spinner } from "@chakra-ui/react";
 
 import { Page } from "@/components/next/Page";
+import { PostList } from "@/components/posts";
 
 import { useToastDispatch } from "@/chakra/contexts/toast-context";
 import { jsonFetcher } from "@/utils";
@@ -35,7 +36,7 @@ export default function LandingPage({ initialData }) {
   return (
     <>
       <Page title='Test Render' />
-      {data && <div>{JSON.stringify(data, null, 2)}</div>}
+      {data && <PostList data={data} />}
       {error && (
         <div>
           If there is an error please try refreshing the page. Thank you.
