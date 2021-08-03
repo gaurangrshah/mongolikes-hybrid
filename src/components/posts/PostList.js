@@ -19,4 +19,5 @@ export const PostList = ({ data, render = renderPosts }) => {
 
 function renderPosts(post) {
   return <PostCard key={post._id} post={post} />;
+  return;
 }
