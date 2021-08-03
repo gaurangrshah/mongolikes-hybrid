@@ -2,7 +2,7 @@
  * @param {string} path
  * @returns {string}
  */
-export async function jsonFetcher(path) {
-  const res = await fetch(path);
+export async function jsonFetcher(...args) {
+  const res = await fetch(...args);
   return res.json();
 }

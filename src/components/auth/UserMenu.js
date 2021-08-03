@@ -23,8 +23,6 @@ const defaultLinks = [
 export function UserMenu() {
   const router = useRouter();
   const [session, loading] = useSession();
-  console.log("🚀 | file: UserMenu.js | line 10 | session", session);
-
   const handleLogout = async (e) => {
     e.preventDefault();
     signOut();

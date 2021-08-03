@@ -10,6 +10,7 @@ import { jsonFetcher } from "@/utils";
 import { options } from "@/app-config";
 
 export default function LandingPage({ initialData }) {
+  const { setMsg } = useToastDispatch();
   const { data, error } = useSWR(
     `${process.env.NEXT_PUBLIC_SITE_URL}/api/posts`,
     jsonFetcher,
@@ -18,8 +19,6 @@ export default function LandingPage({ initialData }) {
       refreshInterval: options?.swr?.refreshInterval,
     }
   );
-
-  const { setMsg } = useToastDispatch();
 
   if (!data) return <Spinner />;
 
