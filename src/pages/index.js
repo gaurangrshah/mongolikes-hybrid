@@ -46,7 +46,7 @@ export default function LandingPage({ initialData }) {
   );
 }
 
-export async function getStaticProps(ctx) {
+export async function getServerSideProps(ctx) {
   const { jsonFetcher } = await import("../utils/swr/json-fetcher");
 
   const response = await jsonFetcher(

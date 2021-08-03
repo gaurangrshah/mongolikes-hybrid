@@ -12,12 +12,12 @@ export const PostList = ({ data, render = renderPosts }) => {
       gap={3}
       p={6}
     >
-      {data.map(render)}
+      {data?.length && data?.map(render)}
     </SimpleGrid>
   );
 };
 
 function renderPosts(post) {
+  if (!post) return;
   return <PostCard key={post._id} post={post} />;
-  return;
 }

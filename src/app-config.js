@@ -13,7 +13,8 @@ const appConfig = {
   options: {
     toasts: { show: true },
     swr: {
-      refreshInterval: process.env.NODE_ENV === "development" ? 20000 : 1000,
+      refreshInterval:
+        process.env.NODE_ENV === "development" ? 200000000000 : 1000,
     },
   },
   envs: {
