@@ -45,12 +45,12 @@ export default function Posts({ initialData, userId }) {
   );
 
   function renderPublicArticles(post) {
-    return <PostCard post={post} />;
+    return <PostCard key={post._id} post={post} />;
   }
 
   return (
     <>
-      <Page title='Test Render' />
+      <Page title={`${data?.name}'s Posts` || `MongoLikes user:${data._id}`} />
       {data && <PostList posts={data?.posts} render={renderPublicArticles} />}
       {error && (
         <div>

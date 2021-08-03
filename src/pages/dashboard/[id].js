@@ -44,13 +44,18 @@ export default function Me({ initialData, userId }) {
   );
 
   function renderManagedArticles(post) {
-    return <PostManagerCard post={post} />;
+    return <PostManagerCard key={post._id} post={post} />;
   }
 
   return (
     <>
-      <Page title='Test Render' />
-      {data && <PostList posts={data?.posts} render={renderManagedArticles} />}
+      <Page title={`MongoLikes Dashboard`} />
+
+      {data?.length && !error ? (
+        <PostList posts={data?.posts} render={renderManagedArticles} />
+      ) : (
+        "Sorry, you don't seem to have any posts yet, get started!"
+      )}
       {error && (
         <div>
           If there is an error please try refreshing the page. Thank you.
