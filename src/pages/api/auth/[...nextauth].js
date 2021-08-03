@@ -84,6 +84,11 @@ export default NextAuth({
     // async signIn(user, account, profile) { return true },
     // async redirect(url, baseUrl) { return baseUrl },
     // async session(session, user) { return session },
+    async session(session, user) {
+      // add user id to to the session
+      session.user._id = user.sub;
+      return Promise.resolve(session);
+    },
     // async jwt(token, user, account, profile, isNewUser) { return token }
   },
 
