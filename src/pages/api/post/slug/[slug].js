@@ -9,7 +9,7 @@ const handler = nc({ onError })
   .get(async (req, res) => {
     const post = await getPostBySlug(req.query.slug);
     if (post) return res.json(post);
-    res.status(500).json({ message: "Error creating post" });
+    res.status(500).json({ message: "Error finding post" });
   });
 
 export default handler;
