@@ -15,18 +15,26 @@ export async function getUserByEmail(email) {
 export async function getUserById(_id) {
   try {
     const user = await User.findOne({ _id }).populate("posts").exec();
+    const publicPosts = user.posts.filter((post) => post.published);
+    user.posts = publicPosts;
     return user.toJSON();
   } catch (err) {
     console.error(errors.notfound.message);
   }
 }
 
-export async function createPost(
-  body,
-  user = { _id: "6106e125fda8ab8379b833d6" } // @FIXME: hardcoded user id as default param
-) {
+export async function getMe(_id) {
+  try {
+    const user = await User.findOne({ _id }).populate("posts").exec();
+    return user.toJSON();
+  } catch (err) {
+    console.error(errors.notfound.message);
+  }
+}
+
+export async function createPost(body, user) {
   const { title } = body;
-  const userId = user._id || "6106e125fda8ab8379b833d6";
+  const userId = user._id || "610749f19b0f9bb065e29e18"; // @FIXME: hardcoded user id
   try {
     const newPost = new Post({
       ...body,
@@ -56,16 +64,17 @@ export async function createPost(
 
 export async function publishPost(postId, userId) {
   try {
-    let author = await getUserById(userId);
-    if (!author) throw new Error(errors.badrequest.message);
-
-    // check if author actually owns the post, and return it if so
-    const authorsPost = await Post.findOne({ _id: postId, author: userId });
-    if (!authorsPost) throw new Error(errors.badrequest.message);
-    // mark post as published and save
-    const post = authorsPost.publish(author._id);
-    console.log("published");
-    return post;
+    const filter = { _id: postId, author: userId };
+    const update = { published: new Date() }; // update to be performed
+    const post = await Post.findOne(filter).exec();
+    if (post) {
+      if (post.published) return { post: new postFactory(post), status: 304 };
+      post.published = new Date();
+      const savedPost = await post.save();
+      return { post: new postFactory(savedPost), status: 200 };
+    } else {
+      throw new Error(errors.badrequest.message);
+    }
   } catch (err) {
     console.error(err);
   }

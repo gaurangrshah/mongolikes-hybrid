@@ -31,13 +31,10 @@ export const PostSchema = new mongoose.Schema(
   }
 );
 
-PostSchema.methods.publish = function (authorId) {
-  if (this.published) throw new Error("This post is already published.");
-  if (this.author.id.toString() === authorId.toString()) {
-    this.published = new Date();
-    const newPost = this.save();
-    return newPost.toJSON();
-  } else throw new Error("You must be the author to perform this action!");
+PostSchema.methods.publish = function () {
+  this.published = new Date();
+  const post = this.save();
+  return post.toJSON();
 };
 
 PostSchema.methods.toJSON = function () {

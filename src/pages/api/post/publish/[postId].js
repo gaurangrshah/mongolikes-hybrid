@@ -10,10 +10,11 @@ const handler = nc({ onError })
   .use(middleware)
   .post(async (req, res, user) => {
     const postId = req?.query?.postId;
-    const userId = "6106e125fda8ab8379b833d6"; // @TODO: update to user._id
+    const userId = "610749f19b0f9bb065e29e18"; // @TODO: update to user._id
 
-    const post = await publishPost(postId, userId);
-    if (post) return res.json(post);
+    const response = await publishPost(postId, userId);
+    console.log("🚀 | file: [postId].js | line 16 | response", response);
+    if (response) return res.status(response?.status).json(response?.post);
     res.status(500).json({ message: "Error creating post" });
   });
 
