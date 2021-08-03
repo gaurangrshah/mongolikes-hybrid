@@ -1,25 +1,34 @@
-import { Avatar, Menu, MenuButton, MenuList, MenuItem } from "@chakra-ui/react";
 import { useRouter } from "next/router";
+import {
+  Avatar,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  Spinner,
+} from "@chakra-ui/react";
 import { signIn, signOut, useSession } from "next-auth/client";
 
 import { ChNextLink } from "@/components/next/NextLink";
+import appConfig from "@/app-config";
+
+const defaultLinks = [
+  { label: "home", href: "/" },
+  { label: "client", href: "/client" },
+  { label: "server", href: "/server" },
+  { label: "protected", href: "/protected" },
+  { label: "api", href: "/api-status" },
+];
 
 export function UserMenu() {
   const router = useRouter();
   const [session, loading] = useSession();
+  console.log("🚀 | file: UserMenu.js | line 10 | session", session);
 
   const handleLogout = async (e) => {
     e.preventDefault();
     signOut();
   };
-
-  const defaultLinks = [
-    { label: "home", href: "/" },
-    { label: "client", href: "/clent" },
-    { label: "server", href: "/server" },
-    { label: "protected", href: "/protected" },
-    { label: "api", href: "/api-status" },
-  ];
 
   return (
     <Menu
@@ -30,15 +39,17 @@ export function UserMenu() {
       offset={8}
       closeOnSelect
     >
-      <Avatar
-        as={MenuButton}
-        name={!loading && session?.user?.email}
-        src={!loading && session?.user?.image}
-        _hover={{ cursor: "pointer" }}
-        loading='lazy'
-      />
+      {!loading && (
+        <Avatar
+          as={MenuButton}
+          name={session?.user.email}
+          src={session?.user.image}
+          _hover={{ cursor: "pointer" }}
+          loading='lazy'
+        />
+      )}
       <MenuList>
-        {!session && !loading ? (
+        {!session ? (
           <>
             <MenuItem
               onClick={(e) => {

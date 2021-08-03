@@ -1,6 +1,6 @@
 import Head from "next/head";
 
-export default function Page({ description, title, children }) {
+export function Page({ description, title, children }) {
   return (
     <>
       <Head>

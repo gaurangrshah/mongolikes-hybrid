@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import useSWR from "swr";
 import { Spinner } from "@chakra-ui/react";
 
-import Page from "@/components/next/Page";
+import { Page } from "@/components/next/Page";
 
 import { useToastDispatch } from "@/chakra/contexts/toast-context";
 import { jsonFetcher } from "@/utils";
