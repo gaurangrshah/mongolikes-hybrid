@@ -26,7 +26,9 @@ export const PostSchema = new mongoose.Schema(
     },
     likes: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
   },
-  { timestamps: { currentTime: () => Math.floor(Date.now() / 1000) } }
+  {
+    timestamps: { currentTime: () => Math.floor(Date.now() / 1000) },
+  }
 );
 
 PostSchema.methods.publish = function (authorId) {
@@ -39,12 +41,14 @@ PostSchema.methods.publish = function (authorId) {
 };
 
 PostSchema.methods.toJSON = function () {
-  var obj = this.toObject();
-  delete obj.__v;
-  delete obj.author.password;
-  obj._id = obj._id.toString();
-  obj.createdAt = obj.createdAt.toString();
-  obj.updatedAt = obj.updatedAt.toString();
+  var obj = this && this?.toObject();
+  if (!obj) return;
+  delete obj?.__v;
+  obj._id = obj?._id?.toString();
+  obj.published = obj?.published?.toDateString();
+  obj.createdAt = obj?.createdAt?.toDateString();
+  obj.updatedAt = obj?.updatedAt?.toDateString();
+  if (obj?.author?.toJSON) obj.author.toJSON();
   return obj;
 };
 

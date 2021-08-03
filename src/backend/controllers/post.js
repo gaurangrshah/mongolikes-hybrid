@@ -1,24 +1,16 @@
 import Post from "../models/Post";
 import User from "../models/User";
-import { errors } from "../utils";
+import { errors, postFactory } from "../utils";
+import { userFactory } from "../utils/factories/user";
 
 export async function getPublicFeed() {
   try {
-    const posts = await Post.where("published")
+    const posts = await Post.find()
       .lean()
-      .ne(null)
-      .sort({ published: "desc" });
-    // // return each post as JSON, so nextjs getSSP can serialize
-
-    const postWithAuthor = await Promise.all(
-      posts.map(async (post) => {
-        const author = await User.findOne({ _id: post?.author?._id });
-        post.author = author;
-        return post;
-      })
-    );
-
-    return postWithAuthor;
+      .sort({ published: "desc" })
+      .populate("author")
+      .exec();
+    return posts?.length && posts.filter((post) => post.published);
   } catch (err) {
     return { ...errors.server, err };
   }
@@ -33,7 +25,7 @@ export async function getPostsByAuthor(authorId) {
 
     const publicPosts = author?.posts?.filter((post) => post.published);
     author.posts = publicPosts;
-    return { author: author.toJSON() };
+    return new userFactory(author);
   } catch (err) {
     return { ...errors.server, err };
   }
@@ -41,17 +33,19 @@ export async function getPostsByAuthor(authorId) {
 
 export async function getPostBySlug(slug) {
   try {
-    const post = await Post.findOne({ slug }).populate("author").exec();
-    return { post: post.toJSON() };
+    const post = await Post.findOne({ slug }).lean().populate("author").exec();
+    return new postFactory(post, true);
   } catch (err) {
     return { ...errors.server, err };
   }
 }
 
 export async function getPostById(postId) {
+  console.log("🚀 | file: post.js | line 72 | postId", postId);
   try {
-    const post = await Post.findOne({ _id: postId }).populate("author").exec();
-    return { post: post.toJSON() };
+    const post = Post.findOne({ _id: postId }).populate("author").exec();
+
+    return new postFactory(post, true);
   } catch (err) {
     return { ...errors.server, err };
   }

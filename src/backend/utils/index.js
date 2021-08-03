@@ -6,3 +6,4 @@ export * from "./random-date";
 export * from "./random-number-between";
 export * from "./random-string";
 export * from "./slugify";
+export * from "./factories";

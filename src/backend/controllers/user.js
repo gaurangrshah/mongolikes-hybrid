@@ -1,6 +1,7 @@
 import User from "../models/User";
 import Post from "../models/Post";
 import { errors, slugify } from "../utils";
+import { postFactory, userFactory } from "../utils/factories";
 
 export async function getUserByEmail(email) {
   try {
