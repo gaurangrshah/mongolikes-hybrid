@@ -69,10 +69,10 @@ export function UserMenu() {
           <>
             <MenuItem>
               <ChNextLink
-                href={`/users/${session?.user?.name}`}
+                href={`/dashboard/${session?.user?._id}`}
                 chProps={{ w: "full" }}
               >
-                Profile
+                dashboard
               </ChNextLink>
             </MenuItem>
             <MenuItem onClick={handleLogout}>
