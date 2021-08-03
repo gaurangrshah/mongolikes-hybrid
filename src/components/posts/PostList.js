@@ -2,7 +2,7 @@ import { SimpleGrid } from "@chakra-ui/react";
 
 import { PostCard } from "./PostCard";
 
-export const PostList = ({ data, render = renderPosts }) => {
+export const PostList = ({ posts, render = renderPosts }) => {
   return (
     <SimpleGrid
       w='full'
@@ -12,7 +12,7 @@ export const PostList = ({ data, render = renderPosts }) => {
       gap={3}
       p={6}
     >
-      {data?.length && data?.map(render)}
+      {posts?.length && posts?.map(render)}
     </SimpleGrid>
   );
 };

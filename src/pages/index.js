@@ -35,7 +35,7 @@ export default function LandingPage({ initialData }) {
   return (
     <>
       <Page title='Test Render' />
-      {data && <PostList data={data} />}
+      {data && <PostList posts={data} />}
       {error && (
         <div>
           If there is an error please try refreshing the page. Thank you.

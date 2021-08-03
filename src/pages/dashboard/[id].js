@@ -1,9 +1,20 @@
 import { useEffect } from "react";
 import useSWR from "swr";
-import { Spinner } from "@chakra-ui/react";
+import {
+  Avatar,
+  Box,
+  Heading,
+  IconButton,
+  Spinner,
+  Text,
+  Tooltip,
+  VStack,
+  useDisclosure,
+} from "@chakra-ui/react";
 
+import { AddIcon } from "@chakra-ui/icons";
 import { Page } from "@/components/next/Page";
-import { PostList } from "@/components/posts";
+import { PostList, PostManagerCard } from "@/components/posts";
 
 import { useToastDispatch } from "@/chakra/contexts/toast-context";
 import { jsonFetcher } from "@/utils";
@@ -12,7 +23,7 @@ import { options } from "@/app-config";
 export default function Me({ initialData, userId }) {
   const { setMsg } = useToastDispatch();
   const { data, error } = useSWR(
-    `${process.env.NEXT_PUBLIC_SITE_URL}/api/user/id/${userId}`,
+    `${process.env.NEXT_PUBLIC_SITE_URL}/api/user/me/${userId}`,
     jsonFetcher,
     {
       initialData,
@@ -32,10 +43,14 @@ export default function Me({ initialData, userId }) {
     [error]
   );
 
+  function renderManagedArticles(post) {
+    return <PostManagerCard post={post} />;
+  }
+
   return (
     <>
       <Page title='Test Render' />
-      {data && <div>{JSON.stringify({ data })}</div>}
+      {data && <PostList posts={data?.posts} render={renderManagedArticles} />}
       {error && (
         <div>
           If there is an error please try refreshing the page. Thank you.
