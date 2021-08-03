@@ -9,8 +9,8 @@ const handler = nc({ onError })
   .use(middleware)
   .get(async (req, res) => {
     const post = await getPostById(req.query.id);
-    if (post) return res.json(post);
-    res.status(500).json({ message: "Error creating post" });
+    if (post._id) return res.json(post);
+    res.status(500).json({ message: "!Error finding post" });
   })
   // .use(verify) // @TODO: lock this down
   .delete(async (req, res, user) => {
@@ -19,8 +19,8 @@ const handler = nc({ onError })
 
     // @FIXME: hardcoded user id
     const post = await deletePost(req.query.id, "6106e125fda8ab8379b833d6");
-    if (post) return res.json(post);
-    res.status(500).json({ message: "Error deleting post" });
+    if (post) return res.status(202).json(post);
+    res.status(500).json({ message: "!Error deleting post" });
   });
 
 export default handler;

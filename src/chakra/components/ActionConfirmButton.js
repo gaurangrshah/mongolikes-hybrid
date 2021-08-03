@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Button, ButtonGroup, IconButton } from "@chakra-ui/react";
 
-export default function ActionConfirmButton({ action, cb, icon, btnLabel }) {
+export function ActionConfirmButton({ action, cb, icon, btnLabel }) {
   const [clicked, setClicked] = useState(false);
   const [confirmed, setConfirmed] = useState(false);
   const [loading, setLoading] = useState(false);

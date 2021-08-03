@@ -4,7 +4,7 @@ import { Avatar, Box, HStack, Text, VStack } from "@chakra-ui/react";
 
 import { ChNextLink } from "@/components/next/NextLink";
 import { uiIcons, PathIcon } from "@/components/icons";
-import ActionConfirmButton from "@/chakra/components";
+import { ActionConfirmButton } from "@/chakra/components";
 
 import { ConditionalWrapper } from "@/utils";
 import { useToastDispatch } from "@/chakra/contexts";
@@ -40,7 +40,8 @@ export function PostMeta({ author, published, postId }) {
     <ConditionalWrapper
       condition={author?.image}
       wrapper={({ children }) => (
-        <ChNextLink href={`author/${author?.name}`}>{children}</ChNextLink>
+        // @TODO: fix route
+        <ChNextLink href={`/author/${author?.name}`}>{children}</ChNextLink>
       )}
     >
       <HStack>
@@ -64,6 +65,7 @@ export function PostMeta({ author, published, postId }) {
               </>
             ) : (
               <ActionConfirmButton
+                // @TODO: update handlers
                 // action={handlePublish}
                 btnLabel='Unpublished'
                 icon={<PathIcon icon={uiIcons.calendar} fill='gray.500' />}
