@@ -33,15 +33,17 @@ export default function Me({ initialData, userId }) {
 
   if (!data) return <Spinner />;
 
-  useEffect(
-    () =>
-      error &&
-      setMsg(
-        { description: error?.message || "Sorry there seems to be an error" },
-        "error"
-      ),
-    [error]
-  );
+  useEffect(() => {
+    if (!error) return;
+    setMsg(
+      {
+        description:
+          "Sorry there seems to be an error, please try refreshing the page",
+      },
+      "error"
+    );
+    console.error(error?.message);
+  }, [error]);
 
   function renderManagedArticles(post) {
     return <PostManagerCard key={post._id} post={post} />;
@@ -66,11 +68,11 @@ export default function Me({ initialData, userId }) {
 }
 
 export async function getServerSideProps(ctx) {
+
+  // @HACK: check auth here, next-auth session is not avaialble when making the fetch request.
   const { getSession } = await import("next-auth/client");
   const session = await getSession(ctx);
-  console.log("🚀 | file: [id].js | line 51 | session", session);
   const isOwner = ctx.query.id === session.user._id;
-  console.log("🚀 | file: [id].js | line 53 | isOwner", isOwner);
   if (isOwner) {
     const { jsonFetcher } = await import("@/utils");
     const data = await jsonFetcher(
@@ -87,9 +89,10 @@ export async function getServerSideProps(ctx) {
       },
     };
   } else {
+    const errorMessage = "You don't have permission to access this page";
     return {
       redirect: {
-        destination: `/user/${ctx.query.id}/posts/?error=must be authenticated`,
+        destination: `/user/${ctx.query.id}/posts/?${errorMessage}`,
         permanenet: false,
       },
       props: {},

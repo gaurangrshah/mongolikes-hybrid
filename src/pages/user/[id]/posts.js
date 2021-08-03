@@ -20,29 +20,29 @@ import { useToastDispatch } from "@/chakra/contexts/toast-context";
 import { jsonFetcher } from "@/utils";
 import { options } from "@/app-config";
 
+const ENDPOINT = `${process.env.NEXT_PUBLIC_SITE_URL}/api/user/id`;
+
 export default function Posts({ initialData, userId }) {
   const { setMsg } = useToastDispatch();
 
-  const { data, error } = useSWR(
-    `${process.env.NEXT_PUBLIC_SITE_URL}/api/user/id/${userId}`,
-    jsonFetcher,
-    {
-      initialData,
-      refreshInterval: options?.swr?.refreshInterval,
-    }
-  );
+  const { data, error } = useSWR(`${ENDPOINT}/${userId}`, jsonFetcher, {
+    initialData,
+    refreshInterval: options?.swr?.refreshInterval,
+  });
 
   if (!data) return <Spinner />;
 
-  useEffect(
-    () =>
-      error &&
-      setMsg(
-        { description: error?.message || "Sorry there seems to be an error" },
-        "error"
-      ),
-    [error]
-  );
+  useEffect(() => {
+    if (!error) return;
+    setMsg(
+      {
+        description:
+          "Sorry there seems to be an error, please try refreshing the page",
+      },
+      "error"
+    );
+    console.error(error?.message);
+  }, [error]);
 
   function renderPublicArticles(post) {
     return <PostCard key={post._id} post={post} />;
@@ -77,10 +77,8 @@ export function AddButton({ onClick }) {
 }
 
 export async function getServerSideProps(ctx) {
-  const { jsonFetcher } = await import("../../../utils/swr/json-fetcher");
-  const data = await jsonFetcher(
-    `${process.env.NEXT_PUBLIC_SITE_URL}/api/user/id/${ctx.params.id}`
-  );
+  const { jsonFetcher } = await import("@/utils/swr/json-fetcher");
+  const data = await jsonFetcher(`${ENDPOINT}/${ctx.params.id}`);
   if (!data)
     return {
       notFound: true,

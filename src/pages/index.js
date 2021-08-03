@@ -9,28 +9,28 @@ import { useToastDispatch } from "@/chakra/contexts/toast-context";
 import { jsonFetcher } from "@/utils";
 import { options } from "@/app-config";
 
+const ENDPOINT = `${process.env.NEXT_PUBLIC_SITE_URL}/api/posts`;
+
 export default function LandingPage({ initialData }) {
   const { setMsg } = useToastDispatch();
-  const { data, error } = useSWR(
-    `${process.env.NEXT_PUBLIC_SITE_URL}/api/posts`,
-    jsonFetcher,
-    {
-      initialData,
-      refreshInterval: options?.swr?.refreshInterval,
-    }
-  );
+  const { data, error } = useSWR(ENDPOINT, jsonFetcher, {
+    initialData,
+    refreshInterval: options?.swr?.refreshInterval,
+  });
 
   if (!data) return <Spinner />;
 
-  useEffect(
-    () =>
-      error &&
-      setMsg(
-        { description: error?.message || "Sorry there seems to be an error" },
-        "error"
-      ),
-    [error]
-  );
+  useEffect(() => {
+    if (!error) return;
+    setMsg(
+      {
+        description:
+          "Sorry there seems to be an error, please try refreshing the page",
+      },
+      "error"
+    );
+    console.error(error?.message);
+  }, [error]);
 
   return (
     <>
@@ -48,8 +48,6 @@ export default function LandingPage({ initialData }) {
 export async function getServerSideProps(ctx) {
   const { jsonFetcher } = await import("../utils/swr/json-fetcher");
 
-  const response = await jsonFetcher(
-    `${process.env.NEXT_PUBLIC_SITE_URL}/api/posts`
-  );
+  const response = await jsonFetcher(ENDPOINT);
   if (response) return { props: { initialData: response || "What is this" } };
 }
