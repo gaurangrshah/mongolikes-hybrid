@@ -48,30 +48,32 @@ function generatePostsForUsers() {
           likes: [],
         });
 
-        if (Math.random() < 0.4) {
-          // 40% chance post is published
-          post.published = randomDate(new Date(2019, 0, 1), new Date());
-        }
+        if (post?.author) {
+          if (Math.random() < 0.4) {
+            // 40% chance post is published
+            post.published = randomDate(new Date(2019, 0, 1), new Date());
+          }
 
-        if (post?.published) {
-          users.forEach((u) => {
-            if (Math.random() < 0.2) {
-              u.likes.push(post._id);
-              post.likes.push(u._id);
+          if (post?.published) {
+            users.forEach((u) => {
+              if (Math.random() < 0.2) {
+                //  20% chance a user likes a post
+                u.likes.push(post._id);
+                post.likes.push(u._id);
+              }
+            });
+          }
+          // add post to user
+          user.posts.push(post._id);
+
+          post.save((err, data) => {
+            if (err) {
+              console.log("error faking posts", err);
+              return;
             }
+            console.log("created Post", data._id);
           });
         }
-
-        // add post to user
-        user.posts.push(post._id);
-
-        post.save((err, data) => {
-          if (err) {
-            console.log("error faking posts", err);
-            return;
-          }
-          console.log("created Post", data._id);
-        });
       }
       user.save((err, data) => {
         if (err) {
