@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const { slugify } = require("../utils/slugify");
 
 export const PostSchema = new mongoose.Schema(
   {
@@ -15,7 +16,7 @@ export const PostSchema = new mongoose.Schema(
     slug: {
       type: String,
       trim: true,
-      required: true,
+      // required: true,
     },
     image: String,
     published: { type: Date },
@@ -30,6 +31,13 @@ export const PostSchema = new mongoose.Schema(
     timestamps: { currentTime: () => Math.floor(Date.now() / 1000) },
   }
 );
+
+PostSchema.pre("validate", function (next) {
+  const post = this;
+  post.slug = slugify(post.title);
+  console.log("pre save post transform");
+  next();
+});
 
 PostSchema.methods.publish = function () {
   this.published = new Date();
