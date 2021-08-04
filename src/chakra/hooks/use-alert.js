@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Spinner } from "@chakra-ui/react";
-import Alert from "../components/Alert";
+import { Alert } from "../components/Alert";
 
 export const useAlert = () => {
   const [show, setShow] = useState(false);

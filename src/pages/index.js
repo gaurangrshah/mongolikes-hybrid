@@ -19,7 +19,7 @@ export default function LandingPage({ initialData }) {
   if (!data) return <Spinner />;
 
   useEffect(() => {
-    if (!error) return;
+    if (!error || data) return;
     setMsg(
       {
         description:

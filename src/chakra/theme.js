@@ -4,4 +4,4 @@ import { fonts } from "./fonts";
 
 const colors = {};
 
-export default extendTheme({ colors, styles });
+export const theme = extendTheme({ colors, styles });
