@@ -2,7 +2,7 @@ import { Box, Heading, HStack, Text, VStack } from "@chakra-ui/react";
 
 import { Image, ChNextLink } from "@/components/next";
 import { PostMeta } from "./PostMeta";
-// import { LikeButton } from "./LikeButton";
+import { LikeButton } from "./LikeButton";
 
 export function PostCard({ post }) {
   return (
@@ -33,18 +33,19 @@ export function PostCard({ post }) {
           {post?.title}
         </Heading>
       </ChNextLink>
-      <Box>
-        <Text flex={1} fontSize='sm' noOfLines={3}>
+      <Box flex={1}>
+        <Text fontSize='sm' noOfLines={3}>
           {post?.body}
         </Text>
       </Box>
       <HStack as='footer' w='full' mt={-1} justify='space-between' flex={0}>
         <PostMeta
           author={post?.author}
-          published={new Date(post.published).toDateString()}
+          published={post.published}
           postId={post._id}
         />
-        {/* @TODO: ADD LIKE BUTTON */}
+        {/* @TODO: CONFIG LIKE BUTTON */}
+        <LikeButton likesArr={[]} />
       </HStack>
     </VStack>
   );

@@ -3,9 +3,9 @@ import { Heading, HStack, Spinner, Text, VStack } from "@chakra-ui/react";
 import { Image } from "@/components/next";
 
 import { PostMeta } from "./PostMeta";
+import { LikeButton } from "./LikeButton";
 
 export function Post({ data }) {
-
   return (
     <VStack
       as='article'
@@ -38,7 +38,8 @@ export function Post({ data }) {
       </Text>
       <HStack as='footer' w='full' mt={-1} justify='space-between' flex={0}>
         <PostMeta author={data?.author} published={data?.published} />
-        {/* @TODO: ADD LIKE BUTTON */}
+        {/* @TODO: CONFIG LIKE BUTTON */}
+        <LikeButton likesArr={[]} />
       </HStack>
     </VStack>
   );
