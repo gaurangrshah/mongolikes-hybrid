@@ -56,6 +56,7 @@ UserSchema.methods.toJSON = function () {
   delete obj.role;
   delete obj.createdAt;
   delete obj.updatedAt;
+  delete obj.emailVerified;
   obj._id = obj._id.toString();
   return obj;
 };

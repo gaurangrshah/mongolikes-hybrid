@@ -6,11 +6,13 @@ import { userFactory } from "../utils/factories/user";
 export async function getPublicFeed() {
   try {
     const posts = await Post.find()
-      .lean()
       .sort({ published: "desc" })
       .populate("author")
       .exec();
-    return posts?.length && posts.filter((post) => post.published);
+
+    const filteredPosts =
+      posts?.length && posts.filter((post) => post.published);
+    return filteredPosts.map((post) => post.toJSON());
   } catch (err) {
     return { ...errors.server, err };
   }
