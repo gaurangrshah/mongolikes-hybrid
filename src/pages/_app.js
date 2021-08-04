@@ -4,8 +4,9 @@ import { ChakraProvider } from "@chakra-ui/react";
 import { DefaultLayout, ModalProvider, theme, ToastProvider } from "@/chakra";
 import { MessageRouter } from "@/components/next";
 
-import { options, envs } from "@/app-config";
+import { envs } from "@/app-config";
 import useSWR, { SWRConfig } from "swr";
+import { jsonFetcher } from "@/utils";
 
 export default function App({ Component, pageProps, router }) {
   const { data: posts } = useSWR("/api/posts");
@@ -27,9 +28,8 @@ export default function App({ Component, pageProps, router }) {
               <DefaultLayout>
                 <SWRConfig
                   value={{
-                    refreshInterval: options?.swr?.refreshInterval,
-                    fetcher: (resource, init) =>
-                      fetch(resource, init).then((res) => res.json()),
+                    refreshInterval: process.env.NEXT_PUBLIC_REFRESH_INTERVAL,
+                    fetcher: jsonFetcher,
                   }}
                 >
                   <Component {...pageProps} />

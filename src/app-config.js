@@ -11,10 +11,6 @@ export const routes = {
 };
 export const options = {
   toasts: { show: true },
-  swr: {
-    refreshInterval:
-      process.env.NODE_ENV === "development" ? 200000000000 : 1000,
-  },
 };
 export const envs = {
   isSSR: typeof window === "undefined",
