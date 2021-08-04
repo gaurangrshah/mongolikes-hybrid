@@ -1,43 +1,42 @@
 import { useCallback } from "react";
-import { useRouter } from "next/router";
 import { Avatar, Box, HStack, Text, VStack } from "@chakra-ui/react";
 
 import { ChNextLink } from "@/components/next/NextLink";
 import { uiIcons, PathIcon } from "@/components/icons";
 import { ActionConfirmButton } from "@/chakra/components";
 
-import { ConditionalWrapper } from "@/utils";
 import { useToastDispatch } from "@/chakra/contexts";
 
-const isSSR = typeof window === "undefined";
-
 export function PostMeta({ author, published, postId }) {
-  !isSSR &&
-    console.log("🚀 | file: PostMeta.js | line 13 | published", published);
-  const router = useRouter();
   const { setMsg } = useToastDispatch();
   const isPostPublished = published !== "Invalid Date";
 
   async function handlePublish() {
-    //@TODO:
-    // return userService.publishPost(postId);
-    return;
+    //@TODO: replace with swr
+    return fetch(`/api/posts/publish/${postId}`, { method: "POST" });
   }
 
   const handleResponse = useCallback(
     (response) => {
       if (response?.status === 200) {
-        router.push(`${router.asPath}/?success="Post has been published"`);
+        setMsg(
+          {
+            description: response?.message || "Post has been published.",
+          },
+          "error"
+        );
       } else {
         setMsg(
           {
-            description: "Could not complete operation, please try again.",
+            description:
+              response?.error ||
+              "Could not complete operation, please try again.",
           },
           "error"
         );
       }
     },
-    [router, setMsg]
+    [setMsg]
   );
 
   return (
@@ -55,7 +54,6 @@ export function PostMeta({ author, published, postId }) {
           <HStack py={1} justify='flex-end'>
             {isPostPublished ? (
               <>
-                {/* @FIXME: */}
                 <PathIcon icon={uiIcons.calendar} fill='gray.500' />
                 <Box
                   dateTime={new Date(published).toDateString()}
@@ -67,11 +65,10 @@ export function PostMeta({ author, published, postId }) {
               </>
             ) : (
               <ActionConfirmButton
-                // @TODO: update handlers
-                // action={handlePublish}
+                action={handlePublish}
                 btnLabel='Unpublished'
                 icon={<PathIcon icon={uiIcons.calendar} fill='gray.500' />}
-                // cb={handleResponse}
+                cb={handleResponse}
               />
             )}
           </HStack>
