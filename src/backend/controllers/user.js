@@ -66,7 +66,7 @@ export async function publishPost(postId, userId) {
     const post = await Post.findOne(filter).exec();
     if (post) {
       if (post.published) return { post: new postFactory(post), status: 304 };
-      post.published = new Date();
+      post.published = Date.now().toDateString();
       const savedPost = await post.save();
       return { post: new postFactory(savedPost), status: 200 };
     } else {
@@ -88,11 +88,4 @@ export async function deletePost(postId, userId) {
   }
 }
 
-/*
 
-@TODO:
-// -- OwnPosts
--- PublishPost
--- deletePost
-
-*/
