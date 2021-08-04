@@ -10,7 +10,6 @@ import {
 import { signIn, signOut, useSession } from "next-auth/client";
 
 import { ChNextLink } from "@/components/next/NextLink";
-import appConfig from "@/app-config";
 
 const defaultLinks = [
   { label: "home", href: "/" },

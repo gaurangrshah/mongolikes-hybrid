@@ -1,11 +1,9 @@
 import { useEffect, useState } from "react";
-import appConfig from "@/app-config";
+import { envs } from "@/app-config";
 
 export function useWindowMounted() {
   const [mounted, setMounted] = useState(false);
-  const {
-    envs: { isSSR },
-  } = appConfig;
+  const { isSSR } = envs;
 
   useEffect(() => {
     if (isSSR) return;

@@ -4,11 +4,14 @@ import { ChakraProvider } from "@chakra-ui/react";
 import { DefaultLayout, ModalProvider, theme, ToastProvider } from "@/chakra";
 import { MessageRouter } from "@/components/next";
 
-import { options } from "@/app-config";
+import { options, envs } from "@/app-config";
 import useSWR, { SWRConfig } from "swr";
 
 export default function App({ Component, pageProps, router }) {
   const { data: posts } = useSWR("/api/posts");
+
+  if (!envs?.isSSR) console.log(theme);
+
   return (
     <ChakraProvider theme={theme} resetCSS>
       <AuthProvider

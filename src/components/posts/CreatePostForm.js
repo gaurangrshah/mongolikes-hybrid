@@ -3,7 +3,7 @@ import { Spinner } from "@chakra-ui/react";
 import BasicForm from "@/components/forms/BasicForm";
 
 import { useWindowMounted } from "@/hooks/use-window-mounted";
-import appConfig from "@/app-config";
+import { envs } from "@/app-config";
 
 export function CreatePostForm({ userId, handleCreate }) {
   const mounted = useWindowMounted();
@@ -35,9 +35,9 @@ export function CreatePostForm({ userId, handleCreate }) {
   ];
   const initialValues = {
     // @FIXME: remove hardcoded values -- used for testing in developement
-    title: appConfig.envs.isDev ? "This is a test Post" : "",
-    body: appConfig.envs.isDev ? "12341234" : "",
-    image: appConfig.envs.isDev ? "http://placeimg.com/640/480/nature" : "",
+    title: envs?.isDev ? "This is a test Post" : "",
+    body: envs?.isDev ? "12341234" : "",
+    image: envs?.isDev ? "http://placeimg.com/640/480/nature" : "",
   };
 
   return (

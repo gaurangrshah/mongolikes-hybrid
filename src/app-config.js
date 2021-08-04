@@ -1,26 +1,22 @@
-const appConfig = {
-  details: {
-    title: "MongoLikes",
-    description: "What do you like?",
-    siteUrl: process.env.NEXT_PUBLIC_URL,
-  },
-  routes: {
-    feed: "/",
-    api: {
-      feed: "/posts",
-    },
-  },
-  options: {
-    toasts: { show: true },
-    swr: {
-      refreshInterval:
-        process.env.NODE_ENV === "development" ? 200000000000 : 1000,
-    },
-  },
-  envs: {
-    isSSR: typeof window === "undefined",
-    isDev: process.env.NODE_ENV === "development",
+export const details = {
+  title: "MongoLikes",
+  description: "What do you like?",
+  siteUrl: process.env.NEXT_PUBLIC_URL,
+};
+export const routes = {
+  feed: "/",
+  api: {
+    feed: "/posts",
   },
 };
-
-export default appConfig;
+export const options = {
+  toasts: { show: true },
+  swr: {
+    refreshInterval:
+      process.env.NODE_ENV === "development" ? 200000000000 : 1000,
+  },
+};
+export const envs = {
+  isSSR: typeof window === "undefined",
+  isDev: process.env.NODE_ENV === "development",
+};
