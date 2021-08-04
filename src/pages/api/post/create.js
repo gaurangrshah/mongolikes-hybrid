@@ -8,7 +8,7 @@ import { createPost } from "@/backend/controllers";
 import { isValidJson } from "@/utils/is-valid-json";
 
 const handler = nc({ onError })
-  .use(verify) // 🔒
+  .use(verify) // 🔒 used by client api
   .use(middleware)
   .post(async (req, res) => {
     const post = await createPost(

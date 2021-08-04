@@ -1,52 +1,12 @@
-import { useRouter } from "next/router";
 import { Spinner } from "@chakra-ui/react";
-import useSWR, { mutate } from "swr";
 
 import BasicForm from "@/components/forms/BasicForm";
 
 import { useWindowMounted } from "@/hooks/use-window-mounted";
 import appConfig from "@/app-config";
-import { useToastDispatch } from "@/chakra/contexts/toast-context";
-import { jsonFetcher } from "@/utils";
-import { options } from "@/app-config";
 
-const ENDPOINT = `${process.env.NEXT_PUBLIC_SITE_URL}/api/user/me`;
-
-export function CreatePostForm({ userId, cb }) {
-  const router = useRouter();
+export function CreatePostForm({ userId, handleCreate }) {
   const mounted = useWindowMounted();
-  const { setMsg } = useToastDispatch();
-
-  const { data, mutate } = useSWR(`${ENDPOINT}/${userId}`, jsonFetcher);
-
-  const handleCreate = async (formValues) => {
-    // mutate cache first
-    mutate(`${ENDPOINT}/${userId}`, { ...data, ...formValues }, false);
-
-    // update resource to match mutation
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_SITE_URL}/api/post/create`,
-      {
-        method: "POST",
-        "Content-Type": "application/json",
-        body: JSON.stringify(formValues),
-      }
-    );
-
-    if (response?.status < 300) {
-      const data = await response.json();
-      // mutate to refect and hydrate the client
-      mutate(`${ENDPOINT}/${userId}`);
-      cb && cb(); // onClose callback will close modal window
-      router.push(
-        `/dashboard/${userId}/?success=${
-          response?.message || "success! post created"
-        } 🎉 `
-      );
-    } else {
-      setMsg({ description: response?.message }, "error");
-    }
-  };
 
   if (!mounted) return <Spinner />;
 

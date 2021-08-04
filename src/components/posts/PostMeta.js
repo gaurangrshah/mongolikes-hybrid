@@ -9,7 +9,11 @@ import { ActionConfirmButton } from "@/chakra/components";
 import { ConditionalWrapper } from "@/utils";
 import { useToastDispatch } from "@/chakra/contexts";
 
+const isSSR = typeof window === "undefined";
+
 export function PostMeta({ author, published, postId }) {
+  !isSSR &&
+    console.log("🚀 | file: PostMeta.js | line 13 | published", published);
   const router = useRouter();
   const { setMsg } = useToastDispatch();
   const isPostPublished = published !== "Invalid Date";
@@ -32,22 +36,16 @@ export function PostMeta({ author, published, postId }) {
           "error"
         );
       }
-    },´
+    },
     [router, setMsg]
   );
 
   return (
-    <ConditionalWrapper
-      condition={author?.image}
-      wrapper={({ children }) => (
-        // @TODO: check route
-        <ChNextLink href={`/user/id/${author?._id}`}>{children}</ChNextLink>
-      )}
-    >
+    <ChNextLink href={`/user/id/${author?._id}`}>
       <HStack>
-        {author?.avatar && (
+        {author?.image && (
           <Avatar
-            src={author.avatar}
+            src={author?.image}
             size='md'
             _hover={{ cursor: "pointer" }}
           />
@@ -59,8 +57,12 @@ export function PostMeta({ author, published, postId }) {
               <>
                 {/* @FIXME: */}
                 <PathIcon icon={uiIcons.calendar} fill='gray.500' />
-                <Box dateTime={published} as='time' fontSize='xs'>
-                  {new Date(published).toDateString()}
+                <Box
+                  dateTime={new Date(published).toDateString()}
+                  as='time'
+                  fontSize='xs'
+                >
+                  {published}
                 </Box>
               </>
             ) : (
@@ -75,6 +77,6 @@ export function PostMeta({ author, published, postId }) {
           </HStack>
         </VStack>
       </HStack>
-    </ConditionalWrapper>
+    </ChNextLink>
   );
 }

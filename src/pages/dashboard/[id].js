@@ -22,9 +22,13 @@ export default function Me({ initialData, userId }) {
   const { setMsg } = useToastDispatch();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const { data, error } = useSWR([`${ENDPOINT}/${userId}`], jsonFetcher, {
-    initialData,
-  });
+  const { data, error, mutate } = useSWR(
+    [`${ENDPOINT}/${userId}`],
+    jsonFetcher,
+    {
+      initialData,
+    }
+  );
 
   useEffect(() => {
     if (!error) return;
@@ -39,6 +43,35 @@ export default function Me({ initialData, userId }) {
   }, [error]);
 
   if (!data && !error) return <Spinner />;
+
+  const handleCreate = async (formValues) => {
+    const response = await fetch(`/api/post/create`, {
+      method: "POST",
+      "Content-Type": "application/json",
+      body: JSON.stringify(formValues),
+    });
+
+    if (response?.status < 300) {
+      const data = await response.json();
+      mutate(async (existingData) => {
+        return {
+          ...existingData,
+          posts: [...existingData.posts, formValues],
+        };
+      });
+      onClose();
+
+      setMsg(
+        {
+          description: "🎉  Success! Post Created! 🎉",
+        },
+        "success"
+      );
+    } else {
+      const defaultError = "Error saving post please try again";
+      setMsg({ description: response?.message || defaultError }, "error");
+    }
+  };
 
   function renderManagedArticles(post) {
     return <PostManagerCard key={post._id} post={post} />;
@@ -72,7 +105,11 @@ export default function Me({ initialData, userId }) {
           </Heading>
         }
       >
-        <CreatePostForm userId={userId} cb={onClose} />
+        <CreatePostForm
+          userId={userId}
+          cb={onClose}
+          handleCreate={handleCreate}
+        />
       </CHModal>
     </>
   );
