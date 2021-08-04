@@ -57,10 +57,7 @@ export function PostManagerCard({ post }) {
         boxShadow='xl'
         rounded='md'
       >
-        <ChNextLink
-          // @HACK: opt for absolute URL to maintain different route context btw public/private profiles
-          href={`${process.env.NEXT_PUBLIC_SITE_URL}/post/slug/${post?.slug}`}
-        >
+        <ChNextLink href={`/post/id/${post?._id}`}>
           {post?.image && (
             <Image src={post?.image} width='480' height='360' rounded='lg' />
           )}
