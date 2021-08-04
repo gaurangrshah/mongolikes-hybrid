@@ -50,6 +50,7 @@ export const styles = {
       height: "100%",
       fontSize: "100%", // == 16px
       // fontSize: '85.2%', // == 10px
+      overflowX: "hidden",
     },
     body: {
       position: "relative",
@@ -65,7 +66,6 @@ export const styles = {
         fontFamily: "body",
       },
       color: "gray.600",
-      overflowX: "hidden",
     },
     "*::placeholder": {
       color: "gray.500",
