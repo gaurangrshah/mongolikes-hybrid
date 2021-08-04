@@ -4,6 +4,7 @@ import { ChakraProvider } from "@chakra-ui/react";
 import { DefaultLayout, ModalProvider, theme, ToastProvider } from "@/chakra";
 import { MessageRouter } from "@/components/next";
 
+import { options } from "@/app-config";
 import useSWR, { SWRConfig } from "swr";
 
 export default function App({ Component, pageProps, router }) {
@@ -23,7 +24,7 @@ export default function App({ Component, pageProps, router }) {
               <DefaultLayout>
                 <SWRConfig
                   value={{
-                    refreshInterval: 3000,
+                    refreshInterval: options?.swr?.refreshInterval,
                     fetcher: (resource, init) =>
                       fetch(resource, init).then((res) => res.json()),
                   }}

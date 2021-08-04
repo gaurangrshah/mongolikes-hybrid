@@ -7,7 +7,6 @@ import { Post } from "@/components/posts";
 
 import { useToastDispatch } from "@/chakra/contexts/toast-context";
 import { jsonFetcher } from "@/utils";
-import { options } from "@/app-config";
 
 export default function PostId({ initialData, slug }) {
   const { data, error } = useSWR(
@@ -15,7 +14,6 @@ export default function PostId({ initialData, slug }) {
     jsonFetcher,
     {
       initialData,
-      refreshInterval: options?.swr?.refreshInterval,
     }
   );
 

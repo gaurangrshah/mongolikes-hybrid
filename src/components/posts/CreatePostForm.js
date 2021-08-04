@@ -17,9 +17,7 @@ export function CreatePostForm({ userId, cb }) {
   const mounted = useWindowMounted();
   const { setMsg } = useToastDispatch();
 
-  const { data, mutate } = useSWR(`${ENDPOINT}/${userId}`, jsonFetcher, {
-    refreshInterval: options?.swr?.refreshInterval,
-  });
+  const { data, mutate } = useSWR(`${ENDPOINT}/${userId}`, jsonFetcher);
 
   const handleCreate = async (formValues) => {
     // mutate cache first

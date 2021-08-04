@@ -7,7 +7,6 @@ import { PostList, PostCard } from "@/components/posts";
 
 import { useToastDispatch } from "@/chakra/contexts/toast-context";
 import { jsonFetcher } from "@/utils";
-import { options } from "@/app-config";
 
 const ENDPOINT = `${process.env.NEXT_PUBLIC_SITE_URL}/api/user/id`;
 
@@ -16,7 +15,6 @@ export default function Posts({ initialData, userId }) {
 
   const { data, error } = useSWR(`${ENDPOINT}/${userId}`, jsonFetcher, {
     initialData,
-    refreshInterval: options?.swr?.refreshInterval,
   });
 
   if (!data) return <Spinner />;
