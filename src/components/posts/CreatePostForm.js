@@ -26,11 +26,14 @@ export function CreatePostForm({ userId, cb }) {
     mutate(`${ENDPOINT}/${userId}`, { ...data, ...formValues }, false);
 
     // update resource to match mutation
-    const response = await fetch(`http://localhost:3000/api/post/create`, {
-      method: "POST",
-      "Content-Type": "application/json",
-      body: JSON.stringify(formValues),
-    });
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_SITE_URL}/api/post/create`,
+      {
+        method: "POST",
+        "Content-Type": "application/json",
+        body: JSON.stringify(formValues),
+      }
+    );
 
     if (response?.status < 300) {
       const data = await response.json();
