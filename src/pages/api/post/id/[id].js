@@ -12,13 +12,11 @@ const handler = nc({ onError })
     if (post._id) return res.json(post);
     res.status(500).json({ message: "!Error finding post" });
   })
-  // .use(verify) // @TODO: lock this down
+  .use(verify) // 🔒 used by client api
   .delete(async (req, res, user) => {
-    // @TODO: uncomment when middleware is active
-    // if (!user) return res.status(401).json({ message: "Unauthorized" });
+    if (!user) return res.status(401).json({ message: "Unauthorized" });
 
-    // @FIXME: hardcoded user id
-    const post = await deletePost(req.query.id, "6106e125fda8ab8379b833d6");
+    const post = await deletePost(req.query.id, req.user.sub);
     if (post) return res.status(202).json(post);
     res.status(500).json({ message: "!Error deleting post" });
   });

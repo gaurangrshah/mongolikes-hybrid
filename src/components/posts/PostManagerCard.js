@@ -15,18 +15,25 @@ export function PostManagerCard({ post }) {
   const { setMsg } = useToastDispatch();
 
   const handleDelete = async () => {
-    //@TODO:
-    // return userService.deleteArticle(article._id);
+    //@TODO: replace with swr
+    return fetch(`/api/post/id/${post._id}`, {
+      method: "DELETE",
+    });
   };
 
   const handleResponse = useCallback(
     (response) => {
       if (response?.status < 300) {
-        router.push(`${router.asPath}/?success="Post has been removed"`);
+        setMsg(
+          {
+            description: "Post deleted",
+          },
+          "success"
+        );
       } else {
         setMsg(
           {
-            description: "Could not complete operation, please try again.",
+            description: "Could not complete operation",
           },
           "error"
         );
