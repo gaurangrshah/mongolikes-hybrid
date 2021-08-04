@@ -1,18 +1,7 @@
 import { useEffect } from "react";
 import useSWR from "swr";
-import {
-  Avatar,
-  Box,
-  Heading,
-  IconButton,
-  Spinner,
-  Text,
-  Tooltip,
-  VStack,
-  useDisclosure,
-} from "@chakra-ui/react";
+import { Spinner } from "@chakra-ui/react";
 
-import { AddIcon } from "@chakra-ui/icons";
 import { Page } from "@/components/next/Page";
 import { PostList, PostCard } from "@/components/posts";
 
@@ -58,21 +47,6 @@ export default function Posts({ initialData, userId }) {
         </div>
       )}
     </>
-  );
-}
-
-export function AddButton({ onClick }) {
-  return (
-    <Tooltip label='Create New Article' fontSize='sm' bg='gray.300'>
-      <IconButton
-        position='fixed'
-        top={24}
-        right={6}
-        icon={<AddIcon />}
-        colorScheme='green'
-        onClick={onClick}
-      />
-    </Tooltip>
   );
 }
 

@@ -32,13 +32,10 @@ export async function getMe(_id) {
   }
 }
 
-export async function createPost(body, user) {
-  const { title } = body;
-  const userId = user._id || "610749f19b0f9bb065e29e18"; // @FIXME: hardcoded user id
+export async function createPost(body, userId) {
   try {
     const newPost = new Post({
       ...body,
-      slug: slugify(title),
       author: userId,
     });
 
