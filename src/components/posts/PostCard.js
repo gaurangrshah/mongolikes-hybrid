@@ -19,9 +19,7 @@ export function PostCard({ post }) {
       boxShadow='xl'
       rounded='md'
     >
-      <ChNextLink
-        href={`${process.env.NEXT_PUBLIC_SITE_URL}/post/id/${post._id}`}
-      >
+      <ChNextLink href={`/post/id/${post._id}`}>
         {post?.image && (
           <Image src={post?.image} width='480' height='360' rounded='lg' />
         )}

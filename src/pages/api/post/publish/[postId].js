@@ -11,7 +11,6 @@ const handler = nc({ onError })
   .post(async (req, res) => {
     const postId = req?.query?.postId;
     const userId = req?.user?.sub; // @TODO: update to user._id
-
     const response = await publishPost(postId, userId);
     if (response) return res.status(response?.status).json(response?.post);
     res.status(500).json({ message: "Error creating post" });

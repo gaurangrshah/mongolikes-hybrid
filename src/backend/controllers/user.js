@@ -62,11 +62,11 @@ export async function createPost(body, userId) {
 export async function publishPost(postId, userId) {
   try {
     const filter = { _id: postId, author: userId };
-    const update = { published: new Date() }; // update to be performed
     const post = await Post.findOne(filter).exec();
     if (post) {
       if (post.published) return { post: new postFactory(post), status: 304 };
-      post.published = Date.now().toDateString();
+      const publishedDate = new Date();
+      post.published = publishedDate.toDateString();
       const savedPost = await post.save();
       return { post: new postFactory(savedPost), status: 200 };
     } else {
@@ -87,5 +87,3 @@ export async function deletePost(postId, userId) {
     console.error(err);
   }
 }
-
-
