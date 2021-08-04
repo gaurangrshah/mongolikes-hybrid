@@ -36,15 +36,13 @@ export function UserMenu() {
       offset={8}
       closeOnSelect
     >
-      {!loading && (
-        <Avatar
-          as={MenuButton}
-          name={session?.user.email}
-          src={session?.user.image}
-          _hover={{ cursor: "pointer" }}
-          loading='lazy'
-        />
-      )}
+      <Avatar
+        as={MenuButton}
+        name={session?.user.email}
+        src={session?.user.image}
+        _hover={{ cursor: "pointer" }}
+        loading='lazy'
+      />
       <MenuList>
         {!session ? (
           <>
