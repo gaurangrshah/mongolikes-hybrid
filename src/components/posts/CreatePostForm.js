@@ -37,7 +37,6 @@ export function CreatePostForm({ userId, cb }) {
 
     if (response?.status < 300) {
       const data = await response.json();
-      console.log("🚀 | file: CreatePostForm.js | line 40 | data", data);
       // mutate to refect and hydrate the client
       mutate(`${ENDPOINT}/${userId}`);
       cb && cb(); // onClose callback will close modal window
@@ -77,6 +76,7 @@ export function CreatePostForm({ userId, cb }) {
     },
   ];
   const initialValues = {
+    // @FIXME: remove hardcoded values -- used for testing in developement
     title: appConfig.envs.isDev ? "This is a test Post" : "",
     body: appConfig.envs.isDev ? "12341234" : "",
     image: appConfig.envs.isDev ? "http://placeimg.com/640/480/nature" : "",

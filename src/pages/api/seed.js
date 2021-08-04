@@ -6,8 +6,7 @@ import seedFaker from "@/backend/services/faker";
 import { errors, onError } from "@/backend/utils";
 
 function seeder(req, res) {
-  console.log(req?.user);
-
+  if (!process.env.NODE_ENV === "development") return;
   mongoose.connection.db.listCollections().toArray((err, collectionNames) => {
     if (err) {
       return res

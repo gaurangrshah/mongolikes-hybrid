@@ -5,8 +5,6 @@ import { Image } from "@/components/next";
 import { PostMeta } from "./PostMeta";
 
 export function Post({ data }) {
-  console.log("🚀 | file: Post.js | line 8 | post", data);
-  // if (!post) return <Spinner />;
 
   return (
     <VStack

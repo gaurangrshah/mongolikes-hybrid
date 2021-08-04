@@ -13,7 +13,6 @@ const handler = nc({ onError })
     const userId = "610749f19b0f9bb065e29e18"; // @TODO: update to user._id
 
     const response = await publishPost(postId, userId);
-    console.log("🚀 | file: [postId].js | line 16 | response", response);
     if (response) return res.status(response?.status).json(response?.post);
     res.status(500).json({ message: "Error creating post" });
   });

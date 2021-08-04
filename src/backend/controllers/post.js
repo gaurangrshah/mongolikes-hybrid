@@ -41,7 +41,6 @@ export async function getPostBySlug(slug) {
 }
 
 export async function getPostById(postId) {
-  console.log("🚀 | file: post.js | line 72 | postId", postId);
   try {
     const post = Post.findOne({ _id: postId }).populate("author").exec();
 

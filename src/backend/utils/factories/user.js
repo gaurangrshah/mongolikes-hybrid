@@ -2,8 +2,6 @@ import { postFactory } from "./post";
 
 export function userFactory(data, related = false) {
   const obj = data?._doc ? data._doc : data;
-  // if(obj?.toJSON) return obj.toJSON();
-  // console.log(`running user factor on ${obj._id}`);
   if (!obj._id) return data;
   delete obj.__v;
   if (obj.password) delete obj.password;
@@ -19,7 +17,6 @@ export function userFactory(data, related = false) {
       obj.posts = obj.posts;
     }
   }
-  // console.log("user🏭");
 
   const { _id, name, username, email, image, posts, likes } = obj;
 
