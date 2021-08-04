@@ -32,7 +32,7 @@ export function PostMeta({ author, published, postId }) {
           "error"
         );
       }
-    },
+    },´
     [router, setMsg]
   );
 
@@ -40,8 +40,8 @@ export function PostMeta({ author, published, postId }) {
     <ConditionalWrapper
       condition={author?.image}
       wrapper={({ children }) => (
-        // @TODO: fix route
-        <ChNextLink href={`/author/${author?.name}`}>{children}</ChNextLink>
+        // @TODO: check route
+        <ChNextLink href={`/user/id/${author?._id}`}>{children}</ChNextLink>
       )}
     >
       <HStack>
