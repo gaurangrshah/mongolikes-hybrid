@@ -40,7 +40,7 @@ export function PostMeta({ author, published, postId }) {
   );
 
   return (
-    <ChNextLink href={`/user/id/${author?._id}`}>
+    <ChNextLink href={`/user/${author?._id}/posts`}>
       <HStack>
         {author?.image && (
           <Avatar
