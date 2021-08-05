@@ -19,7 +19,7 @@ function seeder(req, res) {
         if (err) {
           return console.log(errors.notmodified.message, err.stack);
         }
-        console.log("dropped user collection successully!", result);
+        console.log("🗑 dropped user collection successully!", result);
       });
     }
 
@@ -28,7 +28,7 @@ function seeder(req, res) {
         if (err) {
           return console.log(errors.notmodified.message, err.stack);
         }
-        console.log("dropped posts collection successully!", result);
+        console.log("🗑 dropped posts collection successully!", result);
       });
     }
 
