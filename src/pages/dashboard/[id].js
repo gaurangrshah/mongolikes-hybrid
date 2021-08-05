@@ -48,11 +48,20 @@ export default function Me({ initialData, userId }) {
     );
   }
 
+  const published = data?.posts?.length
+    ? data?.posts?.filter((post) => post.published)
+    : [];
+  const unpublished = data?.posts?.length
+    ? data?.posts?.filter((post) => !post.published)
+    : [];
+
+  const arrayToRender = [...unpublished, ...published];
+
   return (
     <>
       <Page title={`MongoLikes Dashboard`} />
-      {data && !error && (
-        <PostList posts={data?.posts} render={renderManagedArticles} />
+      {arrayToRender && !error && (
+        <PostList posts={arrayToRender} render={renderManagedArticles} />
       )}
       {error && (
         <div>
