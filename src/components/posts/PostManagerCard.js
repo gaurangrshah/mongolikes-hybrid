@@ -8,9 +8,7 @@ import { PostMeta } from "./PostMeta";
 import { ActionConfirmButton } from "@/chakra/components";
 
 export function PostManagerCard({ post, handlePublish, handleDelete }) {
-  const updatePublishedStatus = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
+  const updatePublishedStatus = () => {
     handlePublish(post);
   };
 

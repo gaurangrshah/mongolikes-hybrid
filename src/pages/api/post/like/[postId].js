@@ -1,6 +1,7 @@
 import nc from "next-connect";
 
-import middleware, { verify } from "@/backend/middleware";
+import middleware from "@/backend/middleware";
+import { verify } from "@/backend/middleware/verify";
 import { onError } from "@/backend/utils";
 import { updateLike } from "@/backend/controllers";
 
