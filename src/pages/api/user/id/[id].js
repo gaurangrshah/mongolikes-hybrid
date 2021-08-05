@@ -1,6 +1,7 @@
 import nc from "next-connect";
 
 import middleware from "@/backend/middleware";
+
 import { getUserById } from "@/backend/controllers";
 import { onError, onNoMatch } from "@/backend/utils";
 

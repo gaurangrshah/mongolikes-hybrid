@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import { createModels } from "../utils";
 
-const connection = {}; /* creating connection object*/
+const connection = {}; // creating connection object
 
 export const options = {
   useNewUrlParser: true,
@@ -11,11 +11,11 @@ export const options = {
 };
 
 async function dbConnect() {
-  /* is connection already established? */
+  // is connection already established?
   if (connection.isConnected) {
     return;
   }
-  /* connecting to db */
+  // connecting to db
   const db = await mongoose.connect(process.env.MONGO_DB_URI, options);
 
   connection.isConnected = db.connections[0].readyState;

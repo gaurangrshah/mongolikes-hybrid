@@ -1,6 +1,7 @@
 import nc from "next-connect";
 
 import middleware from "@/backend/middleware";
+
 import { getPublicFeed } from "@/backend/controllers";
 import { onError, onNoMatch } from "@/backend/utils";
 

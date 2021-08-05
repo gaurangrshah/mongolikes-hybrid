@@ -2,6 +2,7 @@ import nc from "next-connect";
 
 import middleware from "@/backend/middleware";
 import { verify } from "@/backend/middleware/verify";
+
 import { deletePost, getPostById } from "@/backend/controllers";
 import { onError, onNoMatch } from "@/backend/utils";
 

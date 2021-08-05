@@ -1,8 +1,8 @@
 import nc from "next-connect";
-import { getSession } from "next-auth/client";
 
 import middleware from "@/backend/middleware";
 import { verify } from "@/backend/middleware/verify";
+
 import { getMe } from "@/backend/controllers";
 import { onError, onNoMatch } from "@/backend/utils";
 
