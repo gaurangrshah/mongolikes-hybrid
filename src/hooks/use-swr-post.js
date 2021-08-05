@@ -22,7 +22,6 @@ export function useSWRPost(...args) {
     }
   }, [error]);
 
-
   const handlePublish = async (post) => {
     if (!session?.user?._id) {
       return setMsg({ description: messages.unauthorized }, "error");
@@ -75,7 +74,7 @@ export function useSWRPost(...args) {
         mutate(async (existingData) => {
           return {
             ...existingData,
-            posts: [...existingData.posts, post],
+            posts: existingData ? [...existingData?.posts, post] : [post],
           };
         });
         setMsg({ description: messages.postcreated }, "success");
@@ -90,18 +89,19 @@ export function useSWRPost(...args) {
     }
   };
 
-  const handleDelete = async () => {
+  const handleDelete = async (post) => {
     if (!session?.user?._id) {
       return setMsg({ description: messages.unauthorized }, "error");
     }
 
     try {
-      const response = await fetch(`/api/post/id/${data._id}`, {
+      const response = await fetch(`/api/post/id/${post._id}`, {
         method: "DELETE",
       });
 
       if (response.status < 300) {
-        mutate(data.posts.filter((post) => post._id !== data._id));
+        const removedData = await response.json();
+        mutate(data.posts.filter((post) => post._id !== removedData._id));
         setMsg({ description: messages.postdeleted }, "success");
       } else {
         setMsg(
@@ -122,4 +122,43 @@ export function useSWRPost(...args) {
     handleCreate,
     handleDelete,
   };
+}
+
+export function useLikes(updater, mutate) {
+  const { setMsg } = useToastDispatch();
+  const [session] = useSession();
+
+  const handleLike = useDebouncedCallback(async (post, cb) => {
+    if (!session?.user?._id) {
+      return setMsg({ description: messages.unauthorized }, "error");
+    }
+
+    try {
+      const response = await fetch(`/api/post/like/${post?._id}`, {
+        method: "POST",
+      });
+      console.log("🚀 | file: use-swr-post.js | line 127 | response", response);
+
+      if (response.status < 300) {
+        const { type, post: updatedPost, user } = await response.json();
+        console.log(
+          "🚀 | file: use-swr-post.js | line 145 | updatedPost",
+          updatedPost
+        );
+
+        mutate(updater(updatedPost, user, type));
+        cb && cb(updatedPost.likes);
+        setMsg({ description: messages.liked }, "success");
+      } else {
+        setMsg(
+          { description: response?.message || messages.tryagain },
+          "error"
+        );
+      }
+    } catch (err) {
+      console.error(err || messages.unknown);
+    }
+  }, 1000);
+
+  return { handleLike };
 }

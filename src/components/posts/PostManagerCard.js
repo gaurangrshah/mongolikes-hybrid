@@ -7,10 +7,15 @@ import { PostMeta } from "./PostMeta";
 
 import { ActionConfirmButton } from "@/chakra/components";
 
-export function PostManagerCard({ post, handlePublish, handleDelete }) {
-  const updatePublishedStatus = () => {
-    handlePublish(post);
-  };
+export function PostManagerCard({
+  post,
+  handlePublish,
+  handleDelete,
+  handleLike,
+}) {
+  const updatePublishedStatus = () => handlePublish(post);
+
+  const handleDeletePost = () => handleDelete(post);
 
   return (
     <>
@@ -43,9 +48,14 @@ export function PostManagerCard({ post, handlePublish, handleDelete }) {
           {post?.body}
         </Text>
         <HStack as='footer' w='full' mt={-1} justify='space-between' flex={0}>
-          <PostMeta post={post} handlePublish={updatePublishedStatus} isAdmin />
+          <PostMeta
+            post={post}
+            handlePublish={updatePublishedStatus}
+            handleLike={handleLike}
+            isAdmin
+          />
           <ActionConfirmButton
-            action={handleDelete}
+            action={handleDeletePost}
             icon={<DeleteIcon />}
             btnLabel='Delete'
           />

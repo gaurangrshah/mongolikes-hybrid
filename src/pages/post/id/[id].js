@@ -2,20 +2,35 @@ import { Spinner } from "@chakra-ui/react";
 
 import { Page } from "@/components/next/Page";
 import { Post } from "@/components/posts";
-import { useSWRPost } from "@/hooks/use-swr-post";
+import { useSWRPost, useLikes } from "@/hooks/use-swr-post";
+import { update3 } from "@/utils/swr";
 
 const ENDPOINT = `${process.env.NEXT_PUBLIC_SITE_URL}/api/post/id`;
 export default function PostId({ initialData, postId }) {
-  const { data, error, handlePublish } = useSWRPost(`${ENDPOINT}/${postId}`, {
-    initialData,
-  });
+  const { data, error, mutate, handlePublish } = useSWRPost(
+    `${ENDPOINT}/${postId}`,
+    { initialData }
+  );
+
+  // @TODO: rename
+  const updater = (updatedPost, user, type) => {
+    return update3(updatedPost, user, type);
+  };
+
+  const { handleLike } = useLikes(updater, mutate);
 
   if (!error && !data) return <Spinner />;
 
   return (
     <>
-      <Page title='Test Render' />
-      {data && <Post post={data} handlePublish={handlePublish} />}
+      <Page title='TESTING DASH' />
+      {data && (
+        <Post
+          post={data}
+          handlePublish={handlePublish}
+          handleLike={handleLike}
+        />
+      )}
 
       {error && (
         <div>

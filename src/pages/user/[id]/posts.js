@@ -1,44 +1,41 @@
-import { useEffect } from "react";
-import useSWR from "swr";
 import { Spinner } from "@chakra-ui/react";
 
 import { Page } from "@/components/next/Page";
 import { PostList, PostCard } from "@/components/posts";
 
-import { useToastDispatch } from "@/chakra/contexts/toast-context";
-import { jsonFetcher } from "@/utils";
+import { useSWRPost, useLikes } from "@/hooks/use-swr-post";
+import { update2 } from "@/utils/swr";
 
 const ENDPOINT = `${process.env.NEXT_PUBLIC_SITE_URL}/api/user/id`;
 
 export default function Posts({ initialData, userId }) {
-  const { setMsg } = useToastDispatch();
-
-  const { data, error } = useSWR(`${ENDPOINT}/${userId}`, jsonFetcher, {
+  const { data, error, mutate } = useSWRPost(`${ENDPOINT}/${userId}`, {
     initialData,
   });
 
-  if (!data) return <Spinner />;
+  const updater = (updatedPost, user, type) => {
+    return update2(data, updatedPost, user, type);
+  };
 
-  useEffect(() => {
-    if (!error) return;
-    setMsg(
-      {
-        description:
-          "Sorry there seems to be an error, please try refreshing the page",
-      },
-      "error"
-    );
-    console.error(error?.message);
-  }, [error]);
+  const { handleLike } = useLikes(updater, mutate);
+
+  if (!error && !data) return <Spinner />;
 
   function renderPublicArticles(post) {
-    return <PostCard key={post._id} post={post} />;
+    console.log(post._id);
+    return <PostCard key={post._id} post={post} handleLike={handleLike} />;
   }
 
   return (
     <>
       <Page title={`${data?.name}'s Posts` || `MongoLikes user:${data._id}`} />
-      {data && <PostList posts={data?.posts} render={renderPublicArticles} />}
+      {data && (
+        <PostList
+          posts={data?.posts}
+          render={renderPublicArticles}
+          handleLike={handleLike}
+        />
+      )}
       {error && (
         <div>
           If there is an error please try refreshing the page. Thank you.

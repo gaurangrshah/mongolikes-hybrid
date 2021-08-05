@@ -51,7 +51,7 @@ export async function createPost(body, userId) {
       }
       return {
         post: savedPost.toJSON(),
-        user: author.toJSON(),
+        user: author && author.toJSON(),
       };
     } else throw new Error(errors.save.message);
   } catch (err) {
@@ -78,10 +78,15 @@ export async function publishPost(postId, userId) {
 
 export async function deletePost(postId, userId) {
   try {
-    return Post.deleteOne({
-      _id: postId,
-      author: userId,
-    }).exec();
+    const post = await Post.findOne({ _id: postId }).exec();
+    const user = await User.findOne({ _id: userId }).exec();
+    if (user?._id.toString() === post?.author.toString()) {
+      const updatedPosts = user.posts.filter((post) => post !== postId);
+      const deletedPost = await post.remove();
+      user.posts = updatedPosts;
+      await user.save();
+      return deletedPost;
+    } else throw new Error("must be owner");
   } catch (err) {
     console.error(err);
   }
@@ -90,21 +95,27 @@ export async function deletePost(postId, userId) {
 export async function updateLike(postId, userId) {
   try {
     const postFilter = { _id: postId };
-    const filuserFilterterUser = { _id: userId };
+    const userFilter = { _id: userId };
     const post = await Post.findOne(postFilter).exec();
     const user = await User.findOne(userFilter).exec();
+    let type;
     if (post) {
       if (post.likes.includes(userId)) {
-        post.likes = post.likes.filter((_id) => _id !== userId);
-        user.likes = user.likes.filter((_id) => _id !== postId);
+        type = "remove";
+        post.likes = post.likes.filter((id) => id.toString() !== userId);
+        user.likes = user.likes.filter((id) => id.toString() !== postId);
       } else {
+        type = "add";
         post.likes.push(userId);
         post.likes = [...new Set(post.likes)];
-        user.likes.push(userId);
+        user.likes.push(postId);
         user.likes = [...new Set(user.likes)];
       }
-      await user.save();
-      return await post.save();
+      console.log("🔵 type", type);
+      const updatedPost = await post.save();
+      const updatedUser = await user.save();
+
+      return { type, post: updatedPost.toJSON(), user: updatedUser.toJSON() };
     } else {
       throw new Error(errors.notfound.message);
     }

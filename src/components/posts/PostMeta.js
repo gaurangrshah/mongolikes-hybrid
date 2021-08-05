@@ -6,7 +6,7 @@ import { uiIcons, PathIcon } from "@/components/icons";
 import { ActionConfirmButton } from "@/chakra/components";
 import { LikeButton } from "./LikeButton";
 
-export function PostMeta({ post, isAdmin = false, handlePublish }) {
+export function PostMeta({ post, isAdmin = false, handlePublish, handleLike }) {
   const router = useRouter();
 
   const isDashboard = router.asPath.includes("/dashboard") || isAdmin;
@@ -23,16 +23,16 @@ export function PostMeta({ post, isAdmin = false, handlePublish }) {
   return (
     <>
       <HStack as='footer' w='full' mt={-1} justify='space-between' flex={0}>
-        <ChNextLink
-          chProps={{ as: HStack }}
-          href={`/user/id/${post?.author?._id}/posts`}
-        >
-          <Avatar
-            name={post?.author?.username}
-            src={post?.author?.image}
-            size='md'
-            _hover={{ cursor: "pointer" }}
-          />
+        <HStack>
+          <ChNextLink href={`/user/${post?.author?._id}/posts`}>
+            <Avatar
+              name={post?.author?.username || post?.author?.email}
+              src={post?.author?.image}
+              size='md'
+              _hover={{ cursor: "pointer" }}
+            />
+          </ChNextLink>
+
           <VStack alignItems='flex-start' spacing={0}>
             <Text as='small'>{post?.author?.name}</Text>
             <HStack py={1} justify='flex-end'>
@@ -62,16 +62,8 @@ export function PostMeta({ post, isAdmin = false, handlePublish }) {
               )}
             </HStack>
           </VStack>
-        </ChNextLink>
-        {!isDashboard && (
-          <LikeButton
-            postId={post?._id}
-            likesArr={post?.likes}
-            //@TODO:
-            // handleUpdate={handleLikeUpdate}
-            handleUpdate={() => console.log("clicked")}
-          />
-        )}
+        </HStack>
+        {!isDashboard && <LikeButton post={post} handleLike={handleLike} />}
       </HStack>
     </>
   );

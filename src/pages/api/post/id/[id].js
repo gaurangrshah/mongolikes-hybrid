@@ -15,8 +15,9 @@ const handler = nc({ onError })
   .use(verify) // 🔒 used by client api
   .delete(async (req, res) => {
     if (!req?.user) return res.status(401).json({ message: "Unauthorized" });
-
-    const post = await deletePost(req.query.id, req.user.sub);
+    const postId = req.query.id;
+    const userId = req?.user?.sub;
+    const post = await deletePost(postId, userId);
     if (post) return res.status(202).json(post);
     res.status(500).json({ message: "!Error deleting post" });
   });

@@ -3,7 +3,7 @@ import { Box, Heading, Text, VStack } from "@chakra-ui/react";
 import { Image, ChNextLink } from "@/components/next";
 import { PostMeta } from "./PostMeta";
 
-export function PostCard({ post }) {
+export function PostCard({ post, handleLike }) {
   return (
     <VStack
       as='article'
@@ -35,7 +35,7 @@ export function PostCard({ post }) {
           {post?.body}
         </Text>
       </Box>
-      <PostMeta post={post} />
+      <PostMeta post={post} handleLike={handleLike} />
     </VStack>
   );
 }

@@ -3,7 +3,7 @@ import { Heading, Text, VStack } from "@chakra-ui/react";
 import { Image } from "@/components/next";
 import { PostMeta } from "./PostMeta";
 
-export function Post({ post, handlePublish }) {
+export function Post({ post, handlePublish, handleLike, isAdmin = false }) {
   return (
     <VStack
       as='article'
@@ -34,7 +34,12 @@ export function Post({ post, handlePublish }) {
       <Text px={3} flex={1} fontSize='md'>
         {post?.body}
       </Text>
-      <PostMeta post={post} handlePublish={handlePublish} isAdmin />
+      <PostMeta
+        post={post}
+        handlePublish={handlePublish}
+        handleLike={handleLike}
+        isAdmin={isAdmin}
+      />
     </VStack>
   );
 }
