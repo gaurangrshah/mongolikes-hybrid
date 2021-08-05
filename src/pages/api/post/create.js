@@ -2,12 +2,12 @@ import nc from "next-connect";
 
 import middleware from "@/backend/middleware";
 import { verify } from "@/backend/middleware/verify";
-import { onError } from "@/backend/utils";
 
 import { createPost } from "@/backend/controllers";
+import { onError, onNoMatch } from "@/backend/utils";
 import { isValidJson } from "@/utils/is-valid-json";
 
-const handler = nc({ onError })
+const handler = nc({ onNoMatch, onError })
   .use(verify) // 🔒 used by client api
   .use(middleware)
   .post(async (req, res) => {

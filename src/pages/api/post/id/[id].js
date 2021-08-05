@@ -3,9 +3,9 @@ import nc from "next-connect";
 import middleware from "@/backend/middleware";
 import { verify } from "@/backend/middleware/verify";
 import { deletePost, getPostById } from "@/backend/controllers";
-import { onError } from "@/backend/utils";
+import { onError, onNoMatch } from "@/backend/utils";
 
-const handler = nc({ onError })
+const handler = nc({ onNoMatch, onError })
   .use(middleware)
   .get(async (req, res) => {
     const post = await getPostById(req.query.id);

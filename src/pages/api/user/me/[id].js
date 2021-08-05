@@ -3,11 +3,10 @@ import { getSession } from "next-auth/client";
 
 import middleware from "@/backend/middleware";
 import { verify } from "@/backend/middleware/verify";
-
-import { onError } from "@/backend/utils";
 import { getMe } from "@/backend/controllers";
+import { onError, onNoMatch } from "@/backend/utils";
 
-const handler = nc({ onError })
+const handler = nc({ onNoMatch, onError })
   .use(verify) // 🔒 session being check with getSSP
   .use(middleware)
   .get(async (req, res) => {

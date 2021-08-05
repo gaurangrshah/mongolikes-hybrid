@@ -2,10 +2,10 @@ import nc from "next-connect";
 
 import middleware from "@/backend/middleware";
 import { verify } from "@/backend/middleware/verify";
-import { onError } from "@/backend/utils";
 import { getLikes, updateLike } from "@/backend/controllers";
+import { onError, onNoMatch } from "@/backend/utils";
 
-const handler = nc({ onError })
+const handler = nc({ onNoMatch, onError })
   .use(middleware)
   .get(async (req, res) => {
     const postId = req.query.postId;
