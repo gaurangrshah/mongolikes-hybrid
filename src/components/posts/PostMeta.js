@@ -6,10 +6,10 @@ import { uiIcons, PathIcon } from "@/components/icons";
 import { ActionConfirmButton } from "@/chakra/components";
 import { LikeButton } from "./LikeButton";
 
-export function PostMeta({ post, handlePublish }) {
+export function PostMeta({ post, isAdmin = false, handlePublish }) {
   const router = useRouter();
 
-  const isDashboard = router.asPath.includes("/dashboard");
+  const isDashboard = router.asPath.includes("/dashboard") || isAdmin;
 
   const isPublished =
     post?.published && post?.published !== "Invalid Date" ? true : false;
@@ -42,6 +42,14 @@ export function PostMeta({ post, handlePublish }) {
                   <Box dateTime={post?.published} as='time' fontSize='xs'>
                     {dateToDateString(post?.published)}
                   </Box>
+                </>
+              ) : (
+                <>
+                  <ActionConfirmButton
+                    action={handlePublish}
+                    btnLabel='Unpublished'
+                    icon={<PathIcon icon={uiIcons.calendar} fill='gray.500' />}
+                  />
                   <Text
                     as='span'
                     role='img'
@@ -51,12 +59,6 @@ export function PostMeta({ post, handlePublish }) {
                     {isPublished ? "🔵" : "🔴"}
                   </Text>
                 </>
-              ) : (
-                <ActionConfirmButton
-                  action={handlePublish}
-                  btnLabel='Unpublished'
-                  icon={<PathIcon icon={uiIcons.calendar} fill='gray.500' />}
-                />
               )}
             </HStack>
           </VStack>
@@ -67,6 +69,7 @@ export function PostMeta({ post, handlePublish }) {
             likesArr={post?.likes}
             //@TODO:
             // handleUpdate={handleLikeUpdate}
+            handleUpdate={() => console.log("clicked")}
           />
         )}
       </HStack>

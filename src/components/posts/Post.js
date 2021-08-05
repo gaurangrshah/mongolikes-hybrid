@@ -34,7 +34,7 @@ export function Post({ post, handlePublish }) {
       <Text px={3} flex={1} fontSize='md'>
         {post?.body}
       </Text>
-      <PostMeta post={post} handlePublish={handlePublish} />
+      <PostMeta post={post} handlePublish={handlePublish} isAdmin />
     </VStack>
   );
 }

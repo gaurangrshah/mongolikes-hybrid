@@ -1,5 +1,3 @@
-import { useCallback } from "react";
-import { useRouter } from "next/router";
 import { Heading, HStack, Text, VStack } from "@chakra-ui/react";
 import { DeleteIcon } from "@chakra-ui/icons";
 
@@ -8,39 +6,13 @@ import { ChNextLink } from "@/components/next/NextLink";
 import { PostMeta } from "./PostMeta";
 
 import { ActionConfirmButton } from "@/chakra/components";
-import { useToastDispatch } from "@/chakra/contexts/toast-context";
 
-export function PostManagerCard({ post }) {
-  const router = useRouter();
-  const { setMsg } = useToastDispatch();
-
-  const handleDelete = async () => {
-    //@TODO: replace with swr
-    return fetch(`/api/post/id/${post._id}`, {
-      method: "DELETE",
-    });
+export function PostManagerCard({ post, handlePublish, handleDelete }) {
+  const updatePublishedStatus = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    handlePublish(post);
   };
-
-  const handleResponse = useCallback(
-    (response) => {
-      if (response?.status < 300) {
-        setMsg(
-          {
-            description: "Post deleted",
-          },
-          "success"
-        );
-      } else {
-        setMsg(
-          {
-            description: "Could not complete operation",
-          },
-          "error"
-        );
-      }
-    },
-    [router, setMsg]
-  );
 
   return (
     <>
@@ -73,14 +45,9 @@ export function PostManagerCard({ post }) {
           {post?.body}
         </Text>
         <HStack as='footer' w='full' mt={-1} justify='space-between' flex={0}>
-          <PostMeta
-            author={post?.author}
-            published={new Date(post.published).toDateString()}
-            postId={post?._id}
-          />
+          <PostMeta post={post} handlePublish={updatePublishedStatus} isAdmin />
           <ActionConfirmButton
             action={handleDelete}
-            cb={handleResponse}
             icon={<DeleteIcon />}
             btnLabel='Delete'
           />

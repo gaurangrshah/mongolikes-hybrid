@@ -1,5 +1,3 @@
-import { useEffect } from "react";
-import useSWR from "swr";
 import {
   Heading,
   IconButton,
@@ -9,73 +7,42 @@ import {
 } from "@chakra-ui/react";
 import { AddIcon } from "@chakra-ui/icons";
 
-import { Page } from "@/components/next/Page";
+import { Page } from "@/components/next";
 import { CreatePostForm, PostList, PostManagerCard } from "@/components/posts";
 import { CHModal } from "@/chakra";
 
-import { useToastDispatch } from "@/chakra/contexts/toast-context";
-import { jsonFetcher } from "@/utils";
+import { useSWRPost } from "@/hooks/use-swr-post";
 
 const ENDPOINT = `${process.env.NEXT_PUBLIC_SITE_URL}/api/user/me`;
 
 export default function Me({ initialData, userId }) {
-  const { setMsg } = useToastDispatch();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const { data, error, mutate } = useSWR(
-    [`${ENDPOINT}/${userId}`],
-    jsonFetcher,
+  const { data, error, handleCreate, handlePublish, handleDelete } = useSWRPost(
+    `${ENDPOINT}/${userId}`,
     {
       initialData,
     }
   );
 
-  useEffect(() => {
-    if (!error) return;
-    setMsg(
-      {
-        description:
-          "Sorry there seems to be an error, please try refreshing the page",
-      },
-      "error"
-    );
-    console.error(error?.message);
-  }, [error]);
+  if (!error && !data) return <Spinner />;
 
-  if (!data && !error) return <Spinner />;
-
-  const handleCreate = async (formValues) => {
-    const response = await fetch(`/api/post/create`, {
-      method: "POST",
-      "Content-Type": "application/json",
-      body: JSON.stringify(formValues),
-    });
-
-    if (response?.status < 300) {
-      const data = await response.json();
-      mutate(async (existingData) => {
-        return {
-          ...existingData,
-          posts: [...existingData.posts, formValues],
-        };
-      });
-      onClose();
-
-      setMsg(
-        {
-          description: "🎉  Success! Post Created! 🎉",
-        },
-        "success"
-      );
-    } else {
-      const defaultError = "Error saving post please try again";
-      setMsg({ description: response?.message || defaultError }, "error");
-    }
+  const handleCreateandClose = async (formValues) => {
+    await handleCreate(formValues);
+    onClose();
   };
 
   function renderManagedArticles(post) {
-    return <PostManagerCard key={post._id} post={post} />;
+    return (
+      <PostManagerCard
+        key={post._id}
+        post={post}
+        handlePublish={handlePublish}
+        handleDelete={handleDelete}
+      />
+    );
   }
+
   return (
     <>
       <Page title={`MongoLikes Dashboard`} />
@@ -108,7 +75,7 @@ export default function Me({ initialData, userId }) {
         <CreatePostForm
           userId={userId}
           cb={onClose}
-          handleCreate={handleCreate}
+          handleCreate={handleCreateandClose}
         />
       </CHModal>
     </>
@@ -131,17 +98,25 @@ export function AddButton({ onClick }) {
 }
 
 export async function getServerSideProps(ctx) {
-  // @HACK: check auth here, next-auth session is not avaialble when making the fetch request.
+  // @HACK: verify user session before reqeust
+  // next-auth session is not avaialble when making the fetch request from gssp
   const { getSession } = await import("next-auth/client");
   const session = await getSession(ctx);
+  if (!session) {
+    return {
+      redirect: {
+        destination: `/user/${ctx.query.id}/posts/?error=you must be signed in first.}`,
+        permanenet: false,
+      },
+      props: {},
+    };
+  }
+
   const isOwner = ctx.query.id === session.user._id;
   if (isOwner) {
     const { jsonFetcher } = await import("@/utils");
     const data = await jsonFetcher(`${ENDPOINT}/${ctx.query.id}`);
-    if (!data)
-      return {
-        notFound: true,
-      };
+    if (!data) return { notFound: true };
 
     return {
       props: {

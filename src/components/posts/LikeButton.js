@@ -4,29 +4,18 @@ import { useDebouncedCallback } from "use-debounce";
 
 import { heartIcons, PathIcon } from "../../components/icons";
 
-// import { useAuth } from "../../contexts/auth-context";
-// import ArticlesService from "../../services/articles-service";
+import { useSession } from "next-auth/client";
 import { useToastDispatch } from "../../chakra/contexts/toast-context";
 
-export function LikeButton({ id, likesArr }) {
-  // const auth = useAuth(); // @TODO: useSession
+export function LikeButton({ likesArr, postId, handleUpdate }) {
+  const [session] = useSession();
   const { setMsg } = useToastDispatch();
 
   const [likes, setLikes] = useState(() => [...likesArr]);
   const [likesCount, setLikesCount] = useState(() => likesArr?.length);
-  const [isLiked, setIsLiked] = useState(
-    // @TODO: set initial liked state from api call
-    // () => auth?.user?._id && likesArr.includes(auth.user._id)
-  );
-
-  const addLike = useDebouncedCallback((userId) => {
-    setLikes((prevState) => [...prevState, userId]);
-    setIsLiked(true);
-  }, 300);
-  const removeLike = useDebouncedCallback((userId) => {
-    setLikes((prevState) => prevState.filter((like) => like !== userId));
-    setIsLiked(false);
-  }, 300);
+  const [isLiked, setIsLiked] = useState();
+  // @TODO: set initial liked state from api call
+  () => session?.user?._id && likesArr.includes(auth.user._id);
 
   useEffect(() => {
     setLikesCount(likes?.length);
@@ -35,39 +24,46 @@ export function LikeButton({ id, likesArr }) {
     };
   }, [likes, setLikesCount, likesArr]);
 
-  const handleLikes = async (e) => {
+  const handleLike = async (e) => {
     e.preventDefault();
     e.stopPropagation();
-    // @TODO: replace with session.user._id
-    if (!auth?.user?._id) {
+    if (!session?.user?._id) {
       return setMsg(
         { description: "You must be logged in first!", duration: null },
         "error"
       );
     }
-    // @TODO: handle likes logic
-    // const { status, message } = await ArticlesService.updateLike(id);
-    // if (status < 299) {
-    //   isLiked ? removeLike(auth?.user?._id) : addLike(auth?.user?._id);
-    // } else {
-    //   setMsg({ description: message }, "error");
-    // }
+
+    // @TODO: define handleUpdate in useSWRPost hook
+    const response = await handleUpdate();
+
+    if (response?.status < 299) {
+      if (isLiked) {
+        // remove like
+        setLikes((prevState) => [
+          ...prevState.filter((like) => like !== session.user._id),
+        ]);
+        setIsLiked(false);
+      } else {
+        // add like
+        setLikes((prevState) => [...prevState, session.user._id]);
+        setIsLiked(true);
+      }
+    }
   };
 
-
   return (
-    <ButtonGroup
-      isAttached
-      variant='outline'
-      // @TODO:
-      // onClick={(e) => mutation.mutate(e)}
-    >
-      <IconButton
-        icon={
-          <PathIcon icon={isLiked ? heartIcons.filled : heartIcons.outlined} />
-        }
-      />
-      <Button mr={"-px"}>{likesCount}</Button>
-    </ButtonGroup>
+    <>
+      <ButtonGroup isAttached variant='outline' onClick={handleLike}>
+        <IconButton
+          icon={
+            <PathIcon
+              icon={isLiked ? heartIcons.filled : heartIcons.outlined}
+            />
+          }
+        />
+        <Button mr={"-px"}>{likesCount}</Button>
+      </ButtonGroup>
+    </>
   );
 }

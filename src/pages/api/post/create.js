@@ -11,8 +11,7 @@ const handler = nc({ onError })
   .use(verify) // 🔒 used by client api
   .use(middleware)
   .post(async (req, res) => {
-    if (!user) return res.status(401).json({ message: "Unauthorized" });
-
+    if (!req?.user) return res.status(401).json({ message: "Unauthorized" });
     const post = await createPost(
       isValidJson(req.body) ? JSON.parse(req.body) : req.body,
       req?.user?.sub
