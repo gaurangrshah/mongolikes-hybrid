@@ -11,7 +11,7 @@ import { isValidJson } from "@/utils/is-valid-json";
 
 const handler = nc({ onError })
   .use(middleware)
-  .post(async (req, res, user) => {
+  .post(async (req, res) => {
     const post = await createPost(
       isValidJson(req.body) ? JSON.parse(req.body) : req.body,
       req.query.userId
