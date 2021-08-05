@@ -24,6 +24,7 @@ export function CreatePostForm({ userId, handleCreate }) {
       placeholder: "http://www.img.com/path-to-image.",
       isRequired: true,
       minLength: 8,
+      disabled: true,
     },
     {
       label: "body",
@@ -37,7 +38,7 @@ export function CreatePostForm({ userId, handleCreate }) {
     // @FIXME: remove hardcoded values -- used for testing in developement
     title: envs?.isDev ? "This is a test Post" : "",
     body: envs?.isDev ? "12341234" : "",
-    image: envs?.isDev ? "http://placeimg.com/640/480/nature" : "",
+    image: "http://placeimg.com/640/480/nature",
   };
 
   return (
