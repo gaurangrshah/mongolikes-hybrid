@@ -92,34 +92,3 @@ export async function deletePost(postId, userId) {
   }
 }
 
-export async function updateLike(postId, userId) {
-  try {
-    const postFilter = { _id: postId };
-    const userFilter = { _id: userId };
-    const post = await Post.findOne(postFilter).exec();
-    const user = await User.findOne(userFilter).exec();
-    let type;
-    if (post) {
-      if (post.likes.includes(userId)) {
-        type = "remove";
-        post.likes = post.likes.filter((id) => id.toString() !== userId);
-        user.likes = user.likes.filter((id) => id.toString() !== postId);
-      } else {
-        type = "add";
-        post.likes.push(userId);
-        post.likes = [...new Set(post.likes)];
-        user.likes.push(postId);
-        user.likes = [...new Set(user.likes)];
-      }
-      console.log("🔵 type", type);
-      const updatedPost = await post.save();
-      const updatedUser = await user.save();
-
-      return { type, post: updatedPost.toJSON(), user: updatedUser.toJSON() };
-    } else {
-      throw new Error(errors.notfound.message);
-    }
-  } catch (err) {
-    console.error(err);
-  }
-}

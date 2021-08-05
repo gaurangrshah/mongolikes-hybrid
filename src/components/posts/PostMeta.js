@@ -1,16 +1,10 @@
-import { useRouter } from "next/router";
 import { Avatar, Box, HStack, Text, VStack } from "@chakra-ui/react";
 
 import { ChNextLink } from "@/components/next/NextLink";
 import { uiIcons, PathIcon } from "@/components/icons";
 import { ActionConfirmButton } from "@/chakra/components";
-import { LikeButton } from "./LikeButton";
 
-export function PostMeta({ post, isAdmin = false, handlePublish, handleLike }) {
-  const router = useRouter();
-
-  const isDashboard = router.asPath.includes("/dashboard") || isAdmin;
-
+export function PostMeta({ post, handlePublish }) {
   const isPublished =
     post?.published && post?.published !== "Invalid Date" ? true : false;
 
@@ -63,7 +57,6 @@ export function PostMeta({ post, isAdmin = false, handlePublish, handleLike }) {
             </HStack>
           </VStack>
         </HStack>
-        {!isDashboard && <LikeButton post={post} handleLike={handleLike} />}
       </HStack>
     </>
   );

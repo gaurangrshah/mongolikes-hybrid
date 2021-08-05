@@ -1,9 +1,9 @@
 import { Box, Heading, Text, VStack } from "@chakra-ui/react";
 
 import { Image, ChNextLink } from "@/components/next";
-import { PostMeta } from "./PostMeta";
+import { PostFooter } from "./PostFooter";
 
-export function PostCard({ post, handleLike }) {
+export function PostCard({ post }) {
   return (
     <VStack
       as='article'
@@ -20,7 +20,13 @@ export function PostCard({ post, handleLike }) {
     >
       <ChNextLink href={`/post/id/${post._id}`}>
         {post?.image && (
-          <Image src={post?.image} width='480' height='360' rounded='lg' />
+          <Image
+            src={post?.image}
+            width='480'
+            height='360'
+            rounded='lg'
+            loading='lazy'
+          />
         )}
         <Heading
           as='h3'
@@ -30,12 +36,12 @@ export function PostCard({ post, handleLike }) {
           {post?.title}
         </Heading>
       </ChNextLink>
-      <Box flex={1}>
-        <Text fontSize='sm' noOfLines={3}>
+      <Box flex={1} w='full'>
+        <Text fontSize='sm' textAlign='left' noOfLines={3}>
           {post?.body}
         </Text>
       </Box>
-      <PostMeta post={post} handleLike={handleLike} />
+      <PostFooter post={post} />
     </VStack>
   );
 }

@@ -3,12 +3,18 @@ import nc from "next-connect";
 import middleware from "@/backend/middleware";
 import { verify } from "@/backend/middleware/verify";
 import { onError } from "@/backend/utils";
-import { updateLike } from "@/backend/controllers";
+import { getLikes, updateLike } from "@/backend/controllers";
 
 const handler = nc({ onError })
-  .use(verify) // 🔒 @TODO: authentication required -- populates user on request
   .use(middleware)
-  .post(async (req, res) => {
+  .get(async (req, res) => {
+    const postId = req.query.postId;
+    const likes = await getLikes(postId);
+    if (likes) return res.json(likes);
+    return res.status(404).json({ error: "likes not found" });
+  })
+  .use(verify) // 🔒 @TODO: authentication required -- populates user on request
+  .put(async (req, res) => {
     const postId = req.query.postId;
     const userId = req?.user?.sub; // @TODO: remove hardcoded userId
     const post = await updateLike(postId, userId);

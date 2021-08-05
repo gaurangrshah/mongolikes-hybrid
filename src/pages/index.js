@@ -1,45 +1,22 @@
-import { useEffect } from "react";
-import useSWR from "swr";
 import { Spinner } from "@chakra-ui/react";
 
 import { Page } from "@/components/next/Page";
 import { PostList, PostCard } from "@/components/posts";
 
-import { useSWRPost, useLikes } from "@/hooks/use-swr-post";
-import { useToastDispatch } from "@/chakra/contexts/toast-context";
-import { update1 } from "@/utils/swr";
+import { useSWRPost } from "@/hooks/use-swr-post";
 
 const ENDPOINT = `${process.env.NEXT_PUBLIC_SITE_URL}/api/posts`;
 
 export default function LandingPage({ initialData }) {
-  const { setMsg } = useToastDispatch();
-  const { data, error, mutate } = useSWRPost(ENDPOINT, {
+  const { data, error } = useSWRPost(ENDPOINT, {
     initialData,
   });
 
-  const updater = (updatedPost, user, type) => {
-    // @TODO: rename
-    return update1(data, updatedPost, user, type);
-  };
-  const { handleLike } = useLikes(updater, mutate);
-
   if (!data) return <Spinner />;
-
-  useEffect(() => {
-    if (!error || data) return;
-    setMsg(
-      {
-        description:
-          "Sorry there seems to be an error, please try refreshing the page",
-      },
-      "error"
-    );
-    console.error(error?.message);
-  }, [error]);
 
   function renderPosts(post) {
     if (!post) return;
-    return <PostCard key={post._id} post={post} handleLike={handleLike} />;
+    return <PostCard key={post._id} post={post} />;
   }
 
   return (

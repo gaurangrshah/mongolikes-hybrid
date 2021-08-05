@@ -1,9 +1,9 @@
-import { Heading, Text, VStack } from "@chakra-ui/react";
+import { Box, Heading, Text, VStack } from "@chakra-ui/react";
 
 import { Image } from "@/components/next";
-import { PostMeta } from "./PostMeta";
+import { PostFooter } from "./PostFooter";
 
-export function Post({ post, handlePublish, handleLike, isAdmin = false }) {
+export function Post({ post, handlePublish, isAdmin = false }) {
   return (
     <VStack
       as='article'
@@ -29,17 +29,20 @@ export function Post({ post, handlePublish, handleLike, isAdmin = false }) {
         {post?.title}
       </Heading>
       {post?.image && (
-        <Image src={post?.image} width='640' height='480' rounded='lg' />
+        <Image
+          src={post?.image}
+          width='640'
+          height='480'
+          rounded='lg'
+          loading='lazy'
+        />
       )}
-      <Text px={3} flex={1} fontSize='md'>
-        {post?.body}
-      </Text>
-      <PostMeta
-        post={post}
-        handlePublish={handlePublish}
-        handleLike={handleLike}
-        isAdmin={isAdmin}
-      />
+      <Box flex={1} w='full'>
+        <Text px={3} flex={1} fontSize='md' textAlign='left'>
+          {post?.body}
+        </Text>
+      </Box>
+      <PostFooter post={post} handlePublish={handlePublish} isAdmin={isAdmin} />
     </VStack>
   );
 }

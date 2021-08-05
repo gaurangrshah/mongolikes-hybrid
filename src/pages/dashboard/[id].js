@@ -11,24 +11,18 @@ import { Page } from "@/components/next";
 import { CreatePostForm, PostList, PostManagerCard } from "@/components/posts";
 import { CHModal } from "@/chakra";
 
-import { useSWRPost, useLikes } from "@/hooks/use-swr-post";
-import { update2 } from "@/utils/swr";
+import { useSWRPost } from "@/hooks/use-swr-post";
 
 const ENDPOINT = `${process.env.NEXT_PUBLIC_SITE_URL}/api/user/me`;
 
 export default function Me({ initialData, userId }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  // @FIXME: likes can't actually be updated from the dashboard page, so this code will never fire
-  const { data, error, mutate, handleCreate, handlePublish, handleDelete } =
-    useSWRPost(`${ENDPOINT}/${userId}`, { initialData });
+  const { data, error, handleCreate, handlePublish, handleDelete } = useSWRPost(
+    `${ENDPOINT}/${userId}`,
+    { initialData }
+  );
 
-  // likes updater fn
-  const updater = (updatedPost, user, type) => {
-    // @TODO: rename
-    return update2(data, updatedPost, user, type);
-  };
-  const { handleLike } = useLikes(updater, mutate);
   if (!error && !data) return <Spinner />;
 
   const handleCreateandClose = async (formValues) => {
@@ -43,7 +37,6 @@ export default function Me({ initialData, userId }) {
         post={post}
         handlePublish={handlePublish}
         handleDelete={handleDelete}
-        handleLike={handleLike}
       />
     );
   }
@@ -55,6 +48,7 @@ export default function Me({ initialData, userId }) {
     ? data?.posts?.filter((post) => !post.published)
     : [];
 
+  // render unpublished posts first in dashboard layout
   const arrayToRender = [...unpublished, ...published];
 
   return (
