@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { PostMeta } from "./PostMeta";
 import { LikeButton } from "./LikeButton";
 
-export function PostFooter({ post, handlePublish, handleDelete, isAdmin }) {
+export function PostFooter({ post, handlePublish, isAdmin }) {
   const router = useRouter();
   const isDashboard = router.asPath.includes("/dashboard") || isAdmin;
 
@@ -13,7 +13,6 @@ export function PostFooter({ post, handlePublish, handleDelete, isAdmin }) {
       <PostMeta
         post={post}
         handlePublish={handlePublish} // handlePublishedStatus
-        handleDelete={handleDelete}
       />
       {!isDashboard && <LikeButton post={post} />}
     </HStack>

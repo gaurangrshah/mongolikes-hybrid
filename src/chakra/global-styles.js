@@ -48,8 +48,8 @@ export const styles = {
       scrollBehavior: "smooth",
       width: "100%",
       height: "100%",
-      fontSize: "100%", // == 16px
-      // fontSize: '85.2%', // == 10px
+      // fontSize: "100%", // == 16px
+      fontSize: "85.2%", // == 10px
       overflowX: "hidden",
     },
     body: {

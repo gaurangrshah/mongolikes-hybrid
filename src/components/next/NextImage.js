@@ -4,7 +4,15 @@ import { chakra } from "@chakra-ui/react";
 
 const Img = chakra(NextImage, {
   shouldForwardProp: (prop) => {
-    return ["width", "height", "src", "alt", "layout"].includes(prop);
+    return [
+      "width",
+      "height",
+      "src",
+      "alt",
+      "layout",
+      "placeholder",
+      "loading",
+    ].includes(prop);
   },
 });
 

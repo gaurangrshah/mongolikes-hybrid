@@ -15,16 +15,16 @@ export default function App({ Component, pageProps, router }) {
 
   return (
     <ChakraProvider theme={theme} resetCSS>
-      <AuthProvider
-        options={{
-          clientMaxAge: 0,
-          keepAlive: 0,
-        }}
-        session={pageProps.session}
-      >
-        <ModalProvider>
-          <ToastProvider>
-            <MessageRouter asPath={router.asPath}>
+      <ModalProvider>
+        <ToastProvider>
+          <MessageRouter asPath={router.asPath}>
+            <AuthProvider
+              options={{
+                clientMaxAge: 0,
+                keepAlive: 0,
+              }}
+              session={pageProps.session}
+            >
               <DefaultLayout>
                 <SWRConfig
                   value={{
@@ -35,10 +35,10 @@ export default function App({ Component, pageProps, router }) {
                   <Component {...pageProps} />
                 </SWRConfig>
               </DefaultLayout>
-            </MessageRouter>
-          </ToastProvider>
-        </ModalProvider>
-      </AuthProvider>
+            </AuthProvider>
+          </MessageRouter>
+        </ToastProvider>
+      </ModalProvider>
     </ChakraProvider>
   );
 }
