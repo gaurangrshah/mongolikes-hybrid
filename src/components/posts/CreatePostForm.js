@@ -5,7 +5,7 @@ import BasicForm from "@/components/forms/BasicForm";
 import { useWindowMounted } from "@/hooks/use-window-mounted";
 import { envs } from "@/app-config";
 
-export function CreatePostForm({ userId, handleCreate }) {
+export function CreatePostForm({ handleCreate }) {
   const mounted = useWindowMounted();
 
   if (!mounted) return <Spinner />;
@@ -35,7 +35,7 @@ export function CreatePostForm({ userId, handleCreate }) {
     },
   ];
   const initialValues = {
-    // @FIXME: remove hardcoded values -- used for testing in developement
+    // hardcoded values -- used for testing in developement
     title: envs?.isDev ? "This is a test Post" : "",
     body: envs?.isDev ? "12341234" : "",
     image: "http://placeimg.com/640/480/nature",

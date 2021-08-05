@@ -12,11 +12,7 @@ const handler = nc({ onNoMatch, onError })
   .get(async (req, res) => {
     if (!req?.user) return res.status(401).json({ message: "Unauthorized" });
     const userId = req?.user?.sub;
-    if (userId !== req?.query.id) {
-      return res.status(401).json({ message: "Unauthorized" });
-    }
-
-    const me = await getMe(userId || req?.query.id);
+    const me = await getMe(userId);
     if (me) return res.json(me);
     res.status(500).json({ message: "Error finding user" });
   });

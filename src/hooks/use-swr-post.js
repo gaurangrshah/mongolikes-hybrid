@@ -1,7 +1,5 @@
-import { useCallback, useEffect } from "react";
+import { useEffect } from "react";
 import useSWR from "swr";
-import { Spinner } from "@chakra-ui/react";
-import { useDebouncedCallback } from "use-debounce";
 import { useSession } from "next-auth/client";
 
 import { useToastDispatch } from "@/chakra/contexts/toast-context";
@@ -74,7 +72,9 @@ export function useSWRPost(...args) {
         mutate(async (existingData) => {
           return {
             ...existingData,
-            posts: existingData ? [...existingData?.posts, post] : [post],
+            posts: existingData?.length
+              ? [...existingData?.posts, post]
+              : [post],
           };
         });
         setMsg({ description: messages.postcreated }, "success");
