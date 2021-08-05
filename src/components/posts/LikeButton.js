@@ -1,25 +1,45 @@
 import { useEffect, useState } from "react";
 import useSWR from "swr";
-import { Button, ButtonGroup, IconButton, Spinner } from "@chakra-ui/react";
+import { Button, ButtonGroup, IconButton } from "@chakra-ui/react";
 import { useDebouncedCallback } from "use-debounce";
 
 import { heartIcons, PathIcon } from "@/components/icons";
 
 import { useSession } from "next-auth/client";
-import { reconcileArrays } from "@/utils";
+import { useToastDispatch } from "@/chakra";
+import { useWindowMounted } from "@/hooks/use-window-mounted";
+
+function randomString(min = 2, max = 5) {
+  return (
+    Math.random().toString(36).substring(min, max) +
+    Math.random().toString(36).substring(min, max)
+  );
+}
 
 export function LikeButton({ post }) {
   const ENDPOINT = `/api/post/like/${post._id}`;
-  const [session] = useSession();
+  const mounted = useWindowMounted();
   const { data, error, mutate } = useSWR(ENDPOINT);
-  const [liked, setLiked] = useState(false);
 
+  const [session] = useSession();
   const userId = session?.user?._id;
+
+  const { setMsg } = useToastDispatch();
+
+  const [liked, setLiked] = useState(false);
+  useEffect(() => data?.length && setLiked(data?.includes(userId)), [data]);
+
   const handleUpdate = useDebouncedCallback(async (e) => {
     e.preventDefault();
     e.stopPropagation();
 
-    if (!userId) return console.error("must be authenticated");
+    if (!userId) {
+      setMsg(
+        { description: `Please sign in first! - ${randomString()}` },
+        "error"
+      );
+      return;
+    }
 
     const response = await fetch(ENDPOINT, {
       method: "PUT",
@@ -33,6 +53,13 @@ export function LikeButton({ post }) {
       }
     } else {
       console.error("error", response);
+      setMsg(
+        {
+          description: `There seems to be an error please try again - ${randomString()}`,
+        },
+        "error"
+      );
+      return;
     }
   }, 300);
 
@@ -40,6 +67,7 @@ export function LikeButton({ post }) {
     <>
       <ButtonGroup isAttached variant='outline' onClick={handleUpdate}>
         <IconButton
+          isLoading={!mounted || (!error && !data)}
           icon={
             <PathIcon
               icon={liked ? heartIcons.filled : heartIcons.outlined}
@@ -52,7 +80,7 @@ export function LikeButton({ post }) {
           sx={{
             fontVariant: "tabular-nums",
           }}
-          isLoading={!error && !data}
+          isLoading={!mounted || (!error && !data)}
         >
           {data?.length}
         </Button>
