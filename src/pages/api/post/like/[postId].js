@@ -14,10 +14,10 @@ const handler = nc({ onNoMatch, onError })
     if (likes) return res.json(likes);
     return res.status(404).json({ error: "likes not found" });
   })
-  .use(verify) // 🔒 @TODO: authentication required -- populates user on request
+  .use(verify) // authentication required -- populates user on request
   .put(async (req, res) => {
     const postId = req.query.postId;
-    const userId = req?.user?.sub; // @TODO: remove hardcoded userId
+    const userId = req?.user?.sub;
     const post = await updateLike(postId, userId);
     if (post) return res.json(post);
     res.status(500).json({ message: "Error finding user" });

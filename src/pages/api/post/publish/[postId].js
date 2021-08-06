@@ -7,7 +7,7 @@ import { publishPost } from "@/backend/controllers";
 import { onError, onNoMatch } from "@/backend/utils";
 
 const handler = nc({ onNoMatch, onError })
-  .use(verify) // 🔒 @TODO: authentication required -- populates user on request
+  .use(verify) // 🔒  authentication required -- populates user on request
   .use(middleware)
   .post(async (req, res) => {
     const postId = req?.query?.postId;
