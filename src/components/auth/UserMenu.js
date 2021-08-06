@@ -30,10 +30,10 @@ export function UserMenu() {
         {!session ? (
           <>
             <MenuItem
-              onClick={(e) => {
-                e.preventDefault();
-                signIn();
-              }}
+            // onClick={(e) => {
+            //   e.preventDefault();
+            //   signIn();
+            // }}
             >
               <ChNextLink href='/api/auth/signin' chProps={{ w: "full" }}>
                 Sign in
