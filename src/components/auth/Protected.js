@@ -1,4 +1,4 @@
-import { useLayoutEffect } from "react";
+import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/client";
 import { Spinner } from "@chakra-ui/react";
@@ -11,7 +11,7 @@ export function Protected({ condition = false, redirectTo, children }) {
   // When rendering client side don't display anything until loading is complete
   if (typeof window !== "undefined" && loading) return <Spinner />;
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (session) return;
     console.log("redirecting user to", redirectTo);
   }, [session]);
