@@ -15,7 +15,6 @@ export default function Posts({ initialData, userId }) {
   if (!error && !data) return <Spinner />;
 
   function renderPublicArticles(post) {
-    console.log(post._id);
     return <PostCard key={post._id} post={post} />;
   }
 
