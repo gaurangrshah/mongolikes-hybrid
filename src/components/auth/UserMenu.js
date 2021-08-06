@@ -1,5 +1,5 @@
 import { Avatar, Menu, MenuButton, MenuList, MenuItem } from "@chakra-ui/react";
-import { signIn, signOut, useSession } from "next-auth/client";
+import { signOut, useSession } from "next-auth/client";
 
 import { ChNextLink } from "@/components/next/NextLink";
 
@@ -29,12 +29,7 @@ export function UserMenu() {
       <MenuList>
         {!session ? (
           <>
-            <MenuItem
-            // onClick={(e) => {
-            //   e.preventDefault();
-            //   signIn();
-            // }}
-            >
+            <MenuItem>
               <ChNextLink href='/api/auth/signin' chProps={{ w: "full" }}>
                 Sign in
               </ChNextLink>
@@ -57,16 +52,6 @@ export function UserMenu() {
             </MenuItem>
           </>
         )}
-        <hr />
-        {/* <>
-          {defaultLinks.map((link) => (
-            <MenuItem key={link.href}>
-              <ChNextLink href={link.href} chProps={{ w: "full" }}>
-                {link.label}
-              </ChNextLink>
-            </MenuItem>
-          ))}
-        </> */}
       </MenuList>
     </Menu>
   );

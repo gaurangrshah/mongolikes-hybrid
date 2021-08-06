@@ -8,7 +8,7 @@ export const PostList = ({ posts, render = renderPosts }) => {
       w='full'
       maxW='container.lg'
       mx='auto'
-      columns={2}
+      columns={[1, null, 2]}
       gap={3}
       p={6}
     >
