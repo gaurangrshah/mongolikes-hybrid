@@ -21,12 +21,7 @@ export default function LandingPage({ initialData }) {
 
   return (
     <>
-      <Page
-        title={
-          `${data?.username || data?.email?.split("@")[0]}'s Posts` ||
-          `MongoLikes user:${data._id}`
-        }
-      />
+      <Page title={"MongoLikes Feed"} />
       {data && <PostList posts={data} render={renderPosts} />}
       {error && (
         <div>
