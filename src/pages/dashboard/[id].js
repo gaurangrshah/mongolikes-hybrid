@@ -57,7 +57,12 @@ export default function Me({}) {
 
   return (
     <>
-      <Page title={`MongoLikes Dashboard`} />
+      <Page
+        title={
+          `${data?.username || data?.email.split("@")[0]}'s Dashboard` ||
+          `MongoLikes user:${data._id}`
+        }
+      />
       {error && (
         <div>
           If there is an error please try refreshing the page. Thank you.
@@ -114,4 +119,3 @@ export function AddButton({ onClick }) {
     </Tooltip>
   );
 }
-

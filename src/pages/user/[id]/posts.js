@@ -21,7 +21,12 @@ export default function Posts({ initialData, userId }) {
 
   return (
     <>
-      <Page title={`${data?.name}'s Posts` || `MongoLikes user:${data._id}`} />
+      <Page
+        title={
+          `${data?.username || data?.email.split("@")[0]}'s Posts` ||
+          `MongoLikes user:${data._id}`
+        }
+      />
       {data && <PostList posts={data?.posts} render={renderPublicArticles} />}
       {error && (
         <div>

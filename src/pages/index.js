@@ -21,7 +21,12 @@ export default function LandingPage({ initialData }) {
 
   return (
     <>
-      <Page title='Test Render' />
+      <Page
+        title={
+          `${data?.username || data?.email.split("@")[0]}'s Posts` ||
+          `MongoLikes user:${data._id}`
+        }
+      />
       {data && <PostList posts={data} render={renderPosts} />}
       {error && (
         <div>
