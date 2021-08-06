@@ -23,7 +23,7 @@ export default function LandingPage({ initialData }) {
     <>
       <Page
         title={
-          `${data?.username || data?.email.split("@")[0]}'s Posts` ||
+          `${data?.username || data?.email?.split("@")[0]}'s Posts` ||
           `MongoLikes user:${data._id}`
         }
       />
