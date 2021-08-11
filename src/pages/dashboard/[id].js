@@ -59,7 +59,7 @@ export default function Me({}) {
     <>
       <Page
         title={
-          `${data?.username || data?.email.split("@")[0]}'s Dashboard` ||
+          `${data?.username || data?.email?.split("@")[0]}'s Dashboard` ||
           `MongoLikes user:${data._id}`
         }
       />
